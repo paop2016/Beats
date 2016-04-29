@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_oriange_pressed">#44f98740</color>
+    <color name="bg_oriange_checked">#77f98740</color>
+    <color name="bg_red_pressed">#44F22613</color>
+    <color name="bg_red_checked">#88F22613</color>
+    <color name="bg_gray">#f8f8f8</color>
+    <color name="bg_transparent">#00000000</color>
+    <color name="bg_white">#ffffff</color>
+</resources>
