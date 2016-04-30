@@ -27,4 +27,5 @@ public class LoginAdapter extends CommenAdapter<User>{
 			holder.getConvertView().setBackgroundResource(R.drawable.sel_lv_backcolor);
 		}
 	}
+
 }
