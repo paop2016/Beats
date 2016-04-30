@@ -81,7 +81,7 @@ public class RecActivity extends FragmentActivity {
 		};
 		vp.setAdapter(adapter);
 		vi.setText(titles).setVisible_item(2).setViewPager(vp, 0).setTextSize(16).setTextLightColor(0xffD64541).setIndicatorColor(0XFFE74C3C)
-		.setIndicatorHeight(2).setMovePattern(VPIndicator.MOVE_DELAY).setMoveDuration(1000);
+		.setIndicatorHeight(2).setMovePattern(VPIndicator.MOVE_DELAY).setMoveDuration(300);
 		Log.v("jay", "Activity");
 	}
 	long oldTime;
