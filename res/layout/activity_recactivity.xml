@@ -3,17 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <include layout="@layout/titlebar_layout"/>
-	<charming.views.VPIndicator
-	    android:layout_height="39dp"
-	    android:layout_width="match_parent"
-	    android:id="@+id/vp_indicator"
-	    />
-		<android.support.v4.view.ViewPager
-	    android:id="@+id/vp_id"
-	    android:layout_width="match_parent"
-	    android:layout_height="0dp"
-	    android:layout_weight="1"
-	    >
-	</android.support.v4.view.ViewPager>
+
+    <View
+        android:id="@+id/viewId"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#ffD64541" />
+
+    <include layout="@layout/titlebar_layout" />
+
+    <charming.views.VPIndicator
+        android:id="@+id/vp_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="39dp" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_id"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </android.support.v4.view.ViewPager>
+
 </LinearLayout>

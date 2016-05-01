@@ -6,12 +6,17 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 import charming.views.VPIndicator;
 import wang.beats.R;
@@ -57,6 +62,16 @@ public class RecActivity extends FragmentActivity {
 						}
 					});
 		}
+		if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
+			View mTopView = findViewById(R.id.viewId);
+			// 透明状态栏
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			// 透明通知栏
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+			LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			params.height = getStatusBarHeight();
+			mTopView.setLayoutParams(params);
+		}
 	}
 
 	private void initData() {
@@ -77,19 +92,30 @@ public class RecActivity extends FragmentActivity {
 			}
 		};
 		vp.setAdapter(adapter);
-		vi.setText(titles).setVisible_item(2).setViewPager(vp, 0).setTextSize(16).setTextLightColor(0xffD64541).setIndicatorColor(0XFFE74C3C)
-		.setIndicatorHeight(2).setMovePattern(VPIndicator.MOVE_SMOOTH).setMoveDuration(300);
+		vi.setText(titles).setVisible_item(2).setViewPager(vp, 0).setTextSize(16).setTextLightColor(0xffD64541)
+				.setIndicatorColor(0XFFE74C3C).setIndicatorHeight(2).setMovePattern(VPIndicator.MOVE_SMOOTH)
+				.setMoveDuration(300);
 	}
+
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		long currentTime=System.currentTimeMillis();
-		if(currentTime-oldTime>2000){
-			oldTime=System.currentTimeMillis();
+		long currentTime = System.currentTimeMillis();
+		if (currentTime - oldTime > 2000) {
+			oldTime = System.currentTimeMillis();
 			Toast.makeText(this, "再按一次退出地理好友推荐系统", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		super.onBackPressed();
 	}
-	
+
+	public int getStatusBarHeight() {
+		int result = 0;
+		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+		if (resourceId > 0) {
+			result = getResources().getDimensionPixelSize(resourceId);
+		}
+		return result;
+	}
+
 }
