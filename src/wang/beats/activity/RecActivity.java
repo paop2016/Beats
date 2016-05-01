@@ -17,16 +17,17 @@ import android.widget.Toast;
 import charming.views.VPIndicator;
 import wang.beats.R;
 import wang.beats.dao.User;
-import wang.beats.fragment.MyFragment;
+import wang.beats.fragment.SortFragment;
 import wang.beats.views.TitleBuilder;
 
 public class RecActivity extends FragmentActivity {
-	VPIndicator vi;
-	ViewPager vp;
-	User user;
-	List<String> titles = Arrays.asList("好友推荐", "添加新地点");
-	ArrayList<Fragment> fragments = new ArrayList<Fragment>();
-	FragmentPagerAdapter adapter;
+	private VPIndicator vi;
+	private ViewPager vp;
+	private User user;
+	private long oldTime;
+	private List<String> titles = Arrays.asList("好友推荐", "添加新地点");
+	private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
+	private FragmentPagerAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +62,8 @@ public class RecActivity extends FragmentActivity {
 	}
 
 	private void initData() {
-		for (int i = 0; i < titles.size(); i++) {
-			MyFragment fragment = MyFragment.getInstance(titles.get(i));
-			fragments.add(fragment);
-		}
+		fragments.add(new SortFragment());
+		fragments.add(new SortFragment());
 		adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
 
 			@Override
@@ -81,10 +80,8 @@ public class RecActivity extends FragmentActivity {
 		};
 		vp.setAdapter(adapter);
 		vi.setText(titles).setVisible_item(2).setViewPager(vp, 0).setTextSize(16).setTextLightColor(0xffD64541).setIndicatorColor(0XFFE74C3C)
-		.setIndicatorHeight(2).setMovePattern(VPIndicator.MOVE_DELAY).setMoveDuration(300);
-		Log.v("jay", "Activity");
+		.setIndicatorHeight(2).setMovePattern(VPIndicator.MOVE_SMOOTH).setMoveDuration(300);
 	}
-	long oldTime;
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
