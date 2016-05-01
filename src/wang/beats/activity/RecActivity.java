@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
@@ -33,7 +32,6 @@ public class RecActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		getActionBar().hide();
 		setContentView(R.layout.activity_recactivity);
 		initView();
 		initData();
