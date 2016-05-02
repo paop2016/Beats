@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp" 
+    android:layout_height="40dp" 
     android:id="@+id/rl_id"
-    android:background="@drawable/sel_lv_backcolor"
-    android:padding="8dp"
+    android:background="@drawable/sel_lv_login"
+    android:padding="4dp"
+    
     >
-    <ImageView 
+    <wang.beats.views.ImageViewTouch
         android:id="@+id/iv_item_userimg_login"
         android:src="@drawable/pic1"
         android:layout_width="32dp"

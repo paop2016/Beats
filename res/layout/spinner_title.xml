@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView
+	android:layout_width="wrap_content"
+	android:layout_height="match_parent"    
+	android:singleLine="true"
+	android:textSize="16sp"
+	android:gravity="center_vertical"
+	android:padding="8dp"
+	android:text="请选择用户"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    />

@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/MyStyle" >
         <activity
-            android:name="wang.beats.activity.LoginActivity"
+            android:name="wang.beats.activity.LoginActivity1"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

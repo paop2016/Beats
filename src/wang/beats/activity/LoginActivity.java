@@ -12,10 +12,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.pdf.PdfDocument.Page;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.BoringLayout.Metrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,12 +39,9 @@ public class LoginActivity extends Activity {
 	TextView tv;
 	ListView lv;
 	SQLiteDatabase db;
-	// MyAdapter adapter;
 	LoginAdapter adapter;
 	ArrayList<User> users;
-	int selectPosition = -1;
-	View mView;
-
+	User mSelectUser;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,7 +50,6 @@ public class LoginActivity extends Activity {
 		initView();
 		initData();
 	}
-
 	private void initFile() {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
@@ -120,10 +118,9 @@ public class LoginActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						if (selectPosition >= 0) {
-							User user = users.get(selectPosition);
+						if (mSelectUser !=null) {
 							Intent intent = new Intent();
-							intent.putExtra("user", user);
+							intent.putExtra("user", mSelectUser);
 							intent.setClass(LoginActivity.this, RecActivity.class);
 							startActivity(intent);
 							finish();
@@ -138,22 +135,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
-				if (position != selectPosition) {
-					Log.v("jay", "selectPosition:" + selectPosition);
-					Log.v("jay", "position:" + position);
-					view.setBackgroundResource(R.color.bg_red_checked);
-					((User) (parent.getAdapter().getItem(position))).setIsChecked(true);
-					if (selectPosition >= 0) {
-						mView.setBackgroundResource(R.drawable.sel_lv_backcolor);
-						((User) (parent.getAdapter().getItem(selectPosition))).setIsChecked(false);
-					}
-					mView = view;
-					selectPosition = position;
-				} else {
-					((User) (parent.getAdapter().getItem(position))).setIsChecked(false);
-					mView.setBackgroundResource(R.drawable.sel_lv_backcolor);
-					selectPosition = -1;
-				}
+				mSelectUser=((LoginAdapter)parent.getAdapter()).changeSelect(position);
 			}
 		});
 		if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
@@ -166,7 +148,6 @@ public class LoginActivity extends Activity {
 			params.height = getStatusBarHeight();
 			mTopView.setLayoutParams(params);
 		}
-
 	}
 
 	@SuppressWarnings("deprecation")

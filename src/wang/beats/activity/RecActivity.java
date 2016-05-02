@@ -56,7 +56,7 @@ public class RecActivity extends FragmentActivity {
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
 							Intent intent = new Intent();
-							intent.setClass(RecActivity.this, LoginActivity.class);
+							intent.setClass(RecActivity.this, LoginActivity1.class);
 							startActivity(intent);
 							finish();
 						}
