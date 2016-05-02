@@ -158,7 +158,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 							map.put(index+"",Integer.valueOf(1));
 						}else
 							map.put(index+"",Integer.valueOf((map.get(index+"").intValue()+1)));
-						
 					} else {
 						int size = positions.size();
 						positions.add(position);

@@ -6,10 +6,10 @@ import android.graphics.drawable.Drawable;
 
 public class User implements Serializable{
 	private int img;
-	private String name;
+	private int name;
 	private int count;
 	private Boolean isChecked=false;
-	public User(int img, String name, int count) {
+	public User(int img, int name, int count) {
 		this.img = img;
 		this.name = name;
 		this.count = count;
@@ -20,10 +20,10 @@ public class User implements Serializable{
 	public void setImg(int img) {
 		this.img = img;
 	}
-	public String getName() {
+	public int getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(int name) {
 		this.name = name;
 	}
 	public int getCount() {

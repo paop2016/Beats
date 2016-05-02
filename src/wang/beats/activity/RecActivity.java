@@ -49,14 +49,14 @@ public class RecActivity extends FragmentActivity {
 
 		user = (User) getIntent().getSerializableExtra("user");
 		if (user != null) {
-			new TitleBuilder(this).setTextCenter(user.getName()).setTextRight("切换账号").setImgLeft(user.getImg())
+			new TitleBuilder(this).setTextCenter("用户"+user.getName()).setTextRight("切换账号").setImgLeft(user.getImg())
 					.setRightListener(new OnClickListener() {
 
 						@Override
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
 							Intent intent = new Intent();
-							intent.setClass(RecActivity.this, LoginActivity1.class);
+							intent.setClass(RecActivity.this, LoginActivity.class);
 							startActivity(intent);
 							finish();
 						}
@@ -117,5 +117,7 @@ public class RecActivity extends FragmentActivity {
 		}
 		return result;
 	}
-
+	public User getUser(){
+		return user;
+	}
 }

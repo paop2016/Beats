@@ -11,9 +11,14 @@ public class ImageViewTouch extends ImageView{
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 	}
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
+		
 		return false;
+		
 	}
 }
+
+

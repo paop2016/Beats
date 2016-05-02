@@ -6,49 +6,148 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
+import org.w3c.dom.Text;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.pdf.PdfDocument.Page;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.BoringLayout.Metrics;
-import android.util.Log;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
+import charming.adapter.CommenViewHolder;
 import wang.beats.R;
+import wang.beats.adapter.ListAdapter;
 import wang.beats.adapter.LoginAdapter;
 import wang.beats.dao.User;
 import wang.beats.db.MyDatabaseHelper;
-import wang.beats.views.TitleBuilder;
 
-public class LoginActivity extends Activity {
-	TextView tv;
-	ListView lv;
+public class LoginActivity extends Activity{
+	private Spinner mSpinner;
+	private ArrayAdapter mTitleAdpater;
+	private LoginAdapter mSpinnerAdapter;
+	private List<User> mUsers;
+	private ImageView mGo;
+	private User mSelectUser;
 	SQLiteDatabase db;
-	LoginAdapter adapter;
-	ArrayList<User> users;
-	User mSelectUser;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_userlogin);
-		// initFile();
+		setContentView(R.layout.activity_login);
 		initView();
 		initData();
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	private void initData() {
+		// TODO Auto-generated method stub
+		db = MyDatabaseHelper.getDatabase(this, "BeatsData", 90);
+		mUsers = new ArrayList<User>();
+		ArrayList<Integer> arr = new ArrayList<Integer>();
+		arr.add(R.drawable.pic5);
+		arr.add(R.drawable.pic1);
+		arr.add(R.drawable.pic2);
+		arr.add(R.drawable.pic3);
+		arr.add(R.drawable.pic4);
+//		arr.add(R.drawable.pic6);
+//		arr.add(R.drawable.pic7);
+//		arr.add(R.drawable.pic8);
+//		arr.add(R.drawable.pic9);
+//		arr.add(R.drawable.pic10);
+		for (int i = 0; i < 5; i++) {
+			Cursor cursor = db.query("PeopleData", null, "people=?", new String[] { i + "" }, null, null, null);
+			cursor.moveToFirst();
+			int userCount_1 = cursor.getInt(cursor.getColumnIndex("count"));
+			User user = new User(arr.get(i), i, userCount_1);
+			mUsers.add(user);
+		}
+		mSpinnerAdapter = new LoginAdapter(this, mUsers, R.layout.item_user_login);
+		mSpinner.setAdapter(mSpinnerAdapter);
+		mSpinner.setPopupBackgroundResource(R.color.bg_transparent);
+		mSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				// TODO Auto-generated method stub
+				mSelectUser=mUsers.get(position);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	@TargetApi(Build.VERSION_CODES.KITKAT)
+	private void initView() {
+		// TODO Auto-generated method stub
+		if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
+			// 透明状态栏
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			// 透明通知栏
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+		}
+		mSpinner=(Spinner) findViewById(R.id.spinnerId);
+		mGo=(ImageView) findViewById(R.id.iv_go);
+		mGo.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getAction()==MotionEvent.ACTION_DOWN){
+					mGo.setPadding(mGo.getPaddingLeft()+10, mGo.getPaddingTop()+10, mGo.getPaddingRight()+10, mGo.getPaddingBottom()+10);
+				}else if(event.getAction()==MotionEvent.ACTION_UP){
+					mGo.setPadding(mGo.getPaddingLeft()-10, mGo.getPaddingTop()-10, mGo.getPaddingRight()-10, mGo.getPaddingBottom()-10);
+				}
+				return mGo.onTouchEvent(event);
+			}
+		});
+		mGo.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.putExtra("user", mSelectUser);
+				intent.setClass(LoginActivity.this, RecActivity.class);
+				startActivity(intent);
+				finish();
+			}
+		});
+	}
+	public int getStatusBarHeight() {
+		int result = 0;
+		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+		if (resourceId > 0) {
+			result = getResources().getDimensionPixelSize(resourceId);
+		}
+		return result;
 	}
 	private void initFile() {
 		// TODO Auto-generated method stub
@@ -107,107 +206,4 @@ public class LoginActivity extends Activity {
 		}
 
 	}
-
-	private void initView() {
-		long oldTime = System.currentTimeMillis();
-		db = MyDatabaseHelper.getDatabase(this, "BeatsData", 90);
-		long newTime = System.currentTimeMillis();
-		new TitleBuilder(this).setTextLeft(newTime - oldTime + "").setTextCenter("请选择账号").setTextRight("登入")
-				.setRightListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						if (mSelectUser !=null) {
-							Intent intent = new Intent();
-							intent.putExtra("user", mSelectUser);
-							intent.setClass(LoginActivity.this, RecActivity.class);
-							startActivity(intent);
-							finish();
-						} else {
-							Toast.makeText(LoginActivity.this, "请选择账号", Toast.LENGTH_SHORT).show();
-						}
-					}
-				});
-		lv = (ListView) findViewById(R.id.lv_login);
-		lv.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO Auto-generated method stub
-				mSelectUser=((LoginAdapter)parent.getAdapter()).changeSelect(position);
-			}
-		});
-		if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
-			View mTopView = findViewById(R.id.viewId);
-			// 透明状态栏
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-			// 透明通知栏
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-			RelativeLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-			params.height = getStatusBarHeight();
-			mTopView.setLayoutParams(params);
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	private void initData() {
-		// TODO Auto-generated method stub
-		// long oldTime=System.currentTimeMillis();
-		users = new ArrayList<User>();
-		ArrayList<Integer> arr = new ArrayList<Integer>();
-		arr.add(R.drawable.pic1);
-		arr.add(R.drawable.pic2);
-		arr.add(R.drawable.pic3);
-		arr.add(R.drawable.pic4);
-		arr.add(R.drawable.pic5);
-		arr.add(R.drawable.pic6);
-		arr.add(R.drawable.pic7);
-		arr.add(R.drawable.pic8);
-		arr.add(R.drawable.pic9);
-		arr.add(R.drawable.pic10);
-		arr.add(R.drawable.pic10);
-		arr.add(R.drawable.pic10);
-		arr.add(R.drawable.pic10);
-		arr.add(R.drawable.pic10);
-		arr.add(R.drawable.pic10);
-		arr.add(R.drawable.pic10);
-		arr.add(R.drawable.pic10);
-		arr.add(R.drawable.pic10);
-		for (int i = 0; i < 18; i++) {
-			Cursor cursor = db.query("PeopleData", null, "people=?", new String[] { i + "" }, null, null, null);
-			cursor.moveToFirst();
-			int userCount_1 = cursor.getInt(cursor.getColumnIndex("count"));
-			User user = new User(arr.get(i), "用户" + i, userCount_1);
-			users.add(user);
-		}
-		adapter = new LoginAdapter(this, users, R.layout.item_user_login);
-		lv.setAdapter(adapter);
-		// long newTime=System.currentTimeMillis();
-		// Toast.makeText(this, newTime-oldTime+"", Toast.LENGTH_SHORT).show();
-	}
-
-	long oldTime;
-
-	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		long currentTime = System.currentTimeMillis();
-		if (currentTime - oldTime > 2000) {
-			oldTime = System.currentTimeMillis();
-			Toast.makeText(this, "再按一次退出地理好友推荐系统", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		super.onBackPressed();
-	}
-
-	public int getStatusBarHeight() {
-		int result = 0;
-		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-		if (resourceId > 0) {
-			result = getResources().getDimensionPixelSize(resourceId);
-		}
-		return result;
-	}
-
 }
