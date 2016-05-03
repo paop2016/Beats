@@ -173,6 +173,28 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 				cv_people.put("count", dataCount);
 				cv_people.put("people", nowPeople);
 				db.insert("PeopleData", null, cv_people);
+				
+				List<Entry<String, Integer>> entrys = new ArrayList<Entry<String, Integer>>(map.entrySet());
+				Collections.sort(entrys, new Comparator<Entry<String, Integer>>() {
+					@Override
+					public int compare(Entry<String, Integer> en1, Entry<String, Integer> en2) {
+						// TODO Auto-generated method stub
+						return en2.getValue() - en1.getValue();
+					}
+				});
+				Iterator<Entry<String, Integer>> it = entrys.iterator();
+				while (it.hasNext()) {
+					Entry<String, Integer> entry = it.next();
+					cv_count.put("position", entry.getKey());
+					cv_simple.put("position", entry.getKey());
+					cv_count.put("count", entry.getValue());
+					cv_count.put("people", nowPeople);
+					cv_simple.put("people", nowPeople);
+					db.insert("PeopleCountData", null, cv_count);
+					db.insert("PeopleSimpleData", null, cv_simple);
+					if (entry.getValue() > 2)
+						db.insert("PeopleCountOver2Data", null, cv_count);
+				}
 			}
 			br.close();
 		} catch (Exception e) {

@@ -66,7 +66,7 @@ public class LoginActivity extends Activity{
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void initData() {
 		// TODO Auto-generated method stub
-		db = MyDatabaseHelper.getDatabase(this, "BeatsData", 90);
+		db = MyDatabaseHelper.getDatabase(this, "BeatsData", 91);
 		mUsers = new ArrayList<User>();
 		ArrayList<Integer> arr = new ArrayList<Integer>();
 		arr.add(R.drawable.pic5);

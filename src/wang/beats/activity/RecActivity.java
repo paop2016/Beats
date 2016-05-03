@@ -62,7 +62,7 @@ public class RecActivity extends FragmentActivity {
 
 	private void initList() {
 		// TODO Auto-generated method stub
-		db=MyDatabaseHelper.getDatabase(this, "BeatsData", 90);
+		db=MyDatabaseHelper.getDatabase(this, "BeatsData", 91);
 		mJaccardList=new ArrayList<Friend>();
 		mCosineList=new ArrayList<Friend>();
 		mCountMap=new HashMap<Integer, Integer>();
