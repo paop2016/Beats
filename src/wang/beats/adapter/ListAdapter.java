@@ -6,39 +6,40 @@ import android.content.Context;
 import charming.adapter.CommenAdapter;
 import charming.adapter.CommenViewHolder;
 import wang.beats.R;
+import wang.beats.dao.Friend;
 import wang.beats.dao.User;
 
-public class ListAdapter extends CommenAdapter<User>{
+public class ListAdapter extends CommenAdapter<Friend>{
 	
 	int selectPosition=-1;
-	public ListAdapter(Context context, List<User> datas, int layoutId) {
+	public ListAdapter(Context context, List<Friend> datas, int layoutId) {
 		super(context, datas, layoutId);
 		// TODO Auto-generated constructor stub
 	}
-	public User changeSelect(int position){
-		User user=null;
+	public Friend changeSelect(int position){
+		Friend friend=null;
 		if(position!=selectPosition){
-			user=getItem(position);
-			user.setIsChecked(true);
+			friend=getItem(position);
+			friend.setChecked(true);
 			if(selectPosition>=0){
-				getItem(selectPosition).setIsChecked(false);
+				getItem(selectPosition).setChecked(false);
 			}
 			selectPosition=position;
 		}
 		else {
-			getItem(position).setIsChecked(false);
+			getItem(position).setChecked(false);
 			selectPosition=-1;
 		}
 		notifyDataSetChanged();
-		return user;
+		return friend;
 	}
 	@Override
-	protected void convert(CommenViewHolder holder, User t) {
+	protected void convert(CommenViewHolder holder, Friend t) {
 		// TODO Auto-generated method stub
-		holder.setImageResource(R.id.iv_item_userimg_login, t.getImg());
+		holder.setImageResource(R.id.iv_item_userimg_login, t.getImgId());
 		holder.setText(R.id.tv_item_username_login, "用户"+t.getName());
-		holder.setText(R.id.tv_item_usercount_login, t.getCount()+"");
-		if(t.getIsChecked()){
+		holder.setText(R.id.tv_item_usercount_login, t.getSimilar()+"");
+		if(t.isChecked()){
 			holder.getConvertView().setBackgroundResource(R.color.bg_red_checked);
 		}else{
 			holder.getConvertView().setBackgroundResource(R.drawable.sel_lv_login);

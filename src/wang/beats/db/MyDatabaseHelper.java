@@ -99,7 +99,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 		String str;
 		File file = new File(Environment.getExternalStorageDirectory() + "/data/peopleValidData.txt");
 		try {
-			FileReader fr=new FileReader(file);
+			FileReader fr = new FileReader(file);
 			if (fr != null) {
 				br = new BufferedReader(fr);
 				ContentValues cv_all = new ContentValues();
@@ -110,23 +110,23 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 				while ((str = br.readLine()) != null) {
 					str.trim();
 					String[] arr = str.split("\\s+");
-					String id=arr[0];
-					String time=arr[1];
-					String latitude=arr[2];
-					String longitude=arr[3];
-					String position=arr[4];
+					String id = arr[0];
+					String time = arr[1];
+					String latitude = arr[2];
+					String longitude = arr[3];
+					String position = arr[4];
 					if (!nowPeople.equals(arr[0])) {
-						List<Entry<String, Integer>> entrys=new ArrayList<Entry<String,Integer>>(map.entrySet());
+						List<Entry<String, Integer>> entrys = new ArrayList<Entry<String, Integer>>(map.entrySet());
 						Collections.sort(entrys, new Comparator<Entry<String, Integer>>() {
 							@Override
 							public int compare(Entry<String, Integer> en1, Entry<String, Integer> en2) {
 								// TODO Auto-generated method stub
-								return en2.getValue()-en1.getValue();
+								return en2.getValue() - en1.getValue();
 							}
 						});
-						Iterator<Entry<String, Integer>> it=entrys.iterator();
-						while(it.hasNext()){
-							Entry<String, Integer> entry=it.next();
+						Iterator<Entry<String, Integer>> it = entrys.iterator();
+						while (it.hasNext()) {
+							Entry<String, Integer> entry = it.next();
 							cv_count.put("position", entry.getKey());
 							cv_simple.put("position", entry.getKey());
 							cv_count.put("count", entry.getValue());
@@ -134,47 +134,47 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 							cv_simple.put("people", nowPeople);
 							db.insert("PeopleCountData", null, cv_count);
 							db.insert("PeopleSimpleData", null, cv_simple);
-							if(entry.getValue()>2)
-							db.insert("PeopleCountOver2Data", null, cv_count);
+							if (entry.getValue() > 2)
+								db.insert("PeopleCountOver2Data", null, cv_count);
 						}
 						cv_people.put("count", dataCount);
 						cv_people.put("people", nowPeople);
 						db.insert("PeopleData", null, cv_people);
 						nowPeople = id;
 						map.clear();
-						dataCount=0;
+						dataCount = 0;
 					}
+					
 					cv_all.put("people", id);
 					cv_all.put("time", time);
 					cv_all.put("latitude", latitude);
 					cv_all.put("longitude", longitude);
-					
 					dataCount++;
 					int index;
 					index = positions.indexOf(position);
 					if (index >= 0) {
 						cv_all.put("position", index);
-						if(map.get(index+"")==null){
-							map.put(index+"",Integer.valueOf(1));
-						}else
-							map.put(index+"",Integer.valueOf((map.get(index+"").intValue()+1)));
+						if (map.get(index + "") == null) {
+							map.put(index + "", Integer.valueOf(1));
+						} else
+							map.put(index + "", Integer.valueOf((map.get(index + "").intValue() + 1)));
 					} else {
 						int size = positions.size();
 						positions.add(position);
 						cv_all.put("position", size);
-						map.put(size+"",Integer.valueOf(1));
+						map.put(size + "", Integer.valueOf(1));
 						cv_positon.put("position", size);
 						cv_positon.put("latitude", latitude);
 						cv_positon.put("longitude", longitude);
 						db.insert("PositionData", null, cv_positon);
 					}
 					db.insert("AllData", null, cv_all);
-					}
+				}
 				cv_people.put("count", dataCount);
 				cv_people.put("people", nowPeople);
 				db.insert("PeopleData", null, cv_people);
-				}
-				br.close();
+			}
+			br.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -201,7 +201,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 		db.execSQL("drop table if exists PeopleSimpleData");
 		db.execSQL("drop table if exists PeopleData");
 		onCreate(db);
-		Toast.makeText(context, "version:"+newVersion, Toast.LENGTH_LONG).show();
+		Toast.makeText(context, "version:" + newVersion, Toast.LENGTH_LONG).show();
 	}
 
 }
