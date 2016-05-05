@@ -61,12 +61,14 @@ public class LoginActivity extends Activity{
 		setContentView(R.layout.activity_login);
 		initView();
 		initData();
+		initFile2();
 	}
+
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void initData() {
 		// TODO Auto-generated method stub
-		db = MyDatabaseHelper.getDatabase(this, "BeatsData", 91);
+		db = MyDatabaseHelper.getDatabase(this);
 		mUsers = new ArrayList<User>();
 		ArrayList<Integer> arr = new ArrayList<Integer>();
 		arr.add(R.drawable.pic5);
@@ -74,12 +76,21 @@ public class LoginActivity extends Activity{
 		arr.add(R.drawable.pic2);
 		arr.add(R.drawable.pic3);
 		arr.add(R.drawable.pic4);
-//		arr.add(R.drawable.pic6);
-//		arr.add(R.drawable.pic7);
-//		arr.add(R.drawable.pic8);
-//		arr.add(R.drawable.pic9);
-//		arr.add(R.drawable.pic10);
-		for (int i = 0; i < 5; i++) {
+		arr.add(R.drawable.pic6);
+		arr.add(R.drawable.pic7);
+		arr.add(R.drawable.pic8);
+		arr.add(R.drawable.pic9);
+		arr.add(R.drawable.pic10);
+		arr.add(R.drawable.pic1);
+		arr.add(R.drawable.pic2);
+		arr.add(R.drawable.pic3);
+		arr.add(R.drawable.pic4);
+		arr.add(R.drawable.pic6);
+		arr.add(R.drawable.pic7);
+		arr.add(R.drawable.pic8);
+		arr.add(R.drawable.pic9);
+		arr.add(R.drawable.pic10);
+		for (int i = 6; i < 15; i++) {
 			Cursor cursor = db.query("PeopleData", null, "people=?", new String[] { i + "" }, null, null, null);
 			cursor.moveToFirst();
 			int userCount_1 = cursor.getInt(cursor.getColumnIndex("count"));
@@ -149,7 +160,7 @@ public class LoginActivity extends Activity{
 		}
 		return result;
 	}
-	private void initFile() {
+	private void initFile1() {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 		File file1 = new File(Environment.getExternalStorageDirectory() + "/data/peopleData.txt");
@@ -205,5 +216,45 @@ public class LoginActivity extends Activity{
 			e.printStackTrace();
 		}
 
+	}
+	private void initFile2() {
+		// TODO Auto-generated method stub
+		File file1 = new File(Environment.getExternalStorageDirectory() + "/data/friendData.txt");
+		File file2 = new File(Environment.getExternalStorageDirectory() + "/data/friendValidData.txt");
+		int num=0;
+		try {
+			file2.createNewFile();
+			FileReader fr = new FileReader(file1);
+			FileWriter fw = new FileWriter(file2);
+			BufferedWriter bw = new BufferedWriter(fw);
+			BufferedReader br = new BufferedReader(fr);
+			String string;
+			while ((string = br.readLine()) != null) {
+				String[] arr = string.split("\\s+");
+				if (arr.length == 2) {
+					if (Integer.valueOf(arr[0]) > 99 + num) {
+						break;
+					}
+					if (Integer.valueOf(arr[0])<=99+num && Integer.valueOf(arr[1])<=99+1 && !arr[1].matches("73")) {
+						if(arr[0].equals("73")){
+							num++;
+							continue;
+						}
+						string = string.replaceFirst(arr[0], Integer.valueOf(arr[0]) - num + "");
+						if(Integer.valueOf(arr[1])>73){
+							string = string.replaceFirst(arr[1], Integer.valueOf(arr[1]) - 1 + "");
+						}
+						bw.write(string);
+						bw.newLine();
+					}
+				}
+			}
+			br.close();
+			bw.flush();
+			bw.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

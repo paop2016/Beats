@@ -33,6 +33,7 @@ import wang.beats.R;
 import wang.beats.dao.Friend;
 import wang.beats.dao.User;
 import wang.beats.db.MyDatabaseHelper;
+import wang.beats.fragment.ConsequenceFragment;
 import wang.beats.fragment.SortFragment;
 import wang.beats.fragment.SortFragment1;
 import wang.beats.views.TitleBuilder;
@@ -42,7 +43,7 @@ public class RecActivity extends FragmentActivity {
 	private ViewPager vp;
 	private User mUser;
 	private long oldTime;
-	private List<String> titles = Arrays.asList("Jaccard相关系数", "Cosine相关系数");
+	private List<String> titles = Arrays.asList("Jaccard系数", "Cosine系数","算法评价");
 	private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 	private FragmentPagerAdapter adapter;
 	private ArrayList<Friend> mJaccardList;
@@ -62,7 +63,7 @@ public class RecActivity extends FragmentActivity {
 
 	private void initList() {
 		// TODO Auto-generated method stub
-		db=MyDatabaseHelper.getDatabase(this, "BeatsData", 91);
+		db=MyDatabaseHelper.getDatabase(this);
 		mJaccardList=new ArrayList<Friend>();
 		mCosineList=new ArrayList<Friend>();
 		mCountMap=new HashMap<Integer, Integer>();
@@ -200,6 +201,7 @@ public class RecActivity extends FragmentActivity {
 	private void initData() {
 		fragments.add(new SortFragment());
 		fragments.add(new SortFragment1());
+		fragments.add(new ConsequenceFragment());
 		adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
 
 			@Override
@@ -215,7 +217,7 @@ public class RecActivity extends FragmentActivity {
 			}
 		};
 		vp.setAdapter(adapter);
-		vi.setText(titles).setVisible_item(2).setViewPager(vp, 0).setTextSize(16).setTextLightColor(0xffD64541)
+		vi.setText(titles).setVisible_item(3).setViewPager(vp, 0).setTextSize(16).setTextLightColor(0xffD64541)
 				.setIndicatorColor(0XFFE74C3C).setIndicatorHeight(2).setMovePattern(VPIndicator.MOVE_SMOOTH)
 				.setMoveDuration(300);
 	}

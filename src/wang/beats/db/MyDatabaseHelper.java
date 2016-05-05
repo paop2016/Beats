@@ -3,6 +3,7 @@ package wang.beats.db;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -27,8 +28,6 @@ import android.os.Environment;
 public class MyDatabaseHelper extends SQLiteOpenHelper{
 	
 	private Context context;
-	private static int mVersion;
-	private static String mName="";
 	private static MyDatabaseHelper dbHelper;
 	private ArrayList<String> positions;
 	private HashMap<String, Integer> map;
@@ -64,6 +63,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 			+ "id integer primary key autoincrement,"
 			+ "people varchar,"
 			+ "count varchar)";
+	private static String CREATE_FRIEND_DATA="create table FriendData("
+			+ "id integer primary key autoincrement,"
+			+ "people varchar,"
+			+ "friend varchar)";
 	private MyDatabaseHelper(Context context, String name, CursorFactory factory, int version) {
 		super(context, name, factory, version);
 		// TODO Auto-generated constructor stub
@@ -71,12 +74,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 		positions=new ArrayList<String>();
 		map = new HashMap<String, Integer>();
 	}
-	public static SQLiteDatabase getDatabase(Context context, String name, int version) {
-		if (dbHelper == null || mVersion != version || !mName.equals(name)) {
-			dbHelper = new MyDatabaseHelper(context, name, null, version);
-			mName = name;
-			mVersion = version;
-		}
+	public static SQLiteDatabase getDatabase(Context context) {
+		dbHelper = new MyDatabaseHelper(context, "BeatsData", null, 98);
 		return dbHelper.getWritableDatabase();
 	}
 
@@ -89,10 +88,38 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 		db.execSQL(CREATE_PEOPLE_COUNT_DATA);
 		db.execSQL(CREATE_PEOPLE_Simple_DATA);
 		db.execSQL(CREATE_PEOPLE_COUNT_OVER2_DATA);
+		db.execSQL(CREATE_FRIEND_DATA);
 		loadPeopleData(db);
-		// Toast.makeText(context, "创建表PeopleData", Toast.LENGTH_LONG).show();
+		loadPeopleData1(db);
 	}
 
+	private void loadPeopleData1(SQLiteDatabase db) {
+		// TODO Auto-generated method stub
+		BufferedReader br = null;
+		String str;
+		File file = new File(Environment.getExternalStorageDirectory() + "/data/friendValidData.txt");
+		FileReader fr;
+		try {
+			fr = new FileReader(file);
+			if (fr != null) {
+				br = new BufferedReader(fr);
+				ContentValues cv_friend = new ContentValues();
+				while ((str = br.readLine()) != null) {
+					str.trim();
+					String[] arr = str.split("\\s+");
+					String people = arr[0];
+					String friend = arr[1];
+					cv_friend.put("people", people);
+					cv_friend.put("friend", friend);
+					db.insert("FriendData", null, cv_friend);
+				}
+			}
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private void loadPeopleData(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		BufferedReader br = null;
@@ -222,6 +249,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 		db.execSQL("drop table if exists PositionData");
 		db.execSQL("drop table if exists PeopleSimpleData");
 		db.execSQL("drop table if exists PeopleData");
+		db.execSQL("drop table if exists FriendData");
 		onCreate(db);
 		Toast.makeText(context, "version:" + newVersion, Toast.LENGTH_LONG).show();
 	}
