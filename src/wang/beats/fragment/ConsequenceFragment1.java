@@ -3,25 +3,22 @@ package wang.beats.fragment;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import charming.views.Histogram;
+import charming.views.HistorgramLine;
 import wang.beats.R;
 import wang.beats.activity.RecActivity;
 import wang.beats.dao.Friend;
 import wang.beats.dao.User;
 import wang.beats.db.MyDatabaseHelper;
 
-public class ConsequenceFragment extends Fragment{
+public class ConsequenceFragment1 extends Fragment{
 	private ArrayList<Friend> mJaccardList;
 	private ArrayList<Friend> mCosineList;
 	ArrayList<List<Integer>> mdata;
@@ -31,8 +28,7 @@ public class ConsequenceFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View view=inflater.inflate(R.layout.fragment_consequence, container, false);
-		Histogram histogram = (Histogram) view.findViewById(R.id.hisId);
+		HistorgramLine histogramLine = new HistorgramLine(getActivity());
 		SQLiteDatabase db=MyDatabaseHelper.getDatabase(getActivity());
 		mJaccardList=((RecActivity)getActivity()).getJaccardList();
 		mCosineList=((RecActivity)getActivity()).getCosineList();
@@ -41,8 +37,6 @@ public class ConsequenceFragment extends Fragment{
 		ArrayList<Integer> int1=new ArrayList<Integer>();
 		ArrayList<Integer> int2=new ArrayList<Integer>();
 		Cursor cursor=db.query("FriendData", null, "people=?", new String[]{mUser.getName()+""}, null, null, null);
-		int mJaccardCount=0;
-		int mCosineCount=0;
 		if(cursor.moveToFirst()){
 			do{
 				int friendName=cursor.getInt(cursor.getColumnIndex("friend"));
@@ -52,21 +46,21 @@ public class ConsequenceFragment extends Fragment{
 					if(friend.getName()==friendName){
 //						位置
 						int position=i;
-						mJaccardCount+=i;
 						int1.add(position);
 					}
 					if(friend1.getName()==friendName){
 //						位置
 						int position=i;
-						mCosineCount+=i;
+						int2.add(position);
 					}
 				}
 			}while(cursor.moveToNext());
 		}
 		cursor.close();
-		List<Integer> mData=Arrays.asList(mJaccardCount,mCosineCount);
-		histogram.setBackgroundColor(getResources().getColor(R.color.bg_white));
-		histogram.setData(mData);
-		return view;
+		mdata.add(int1);
+		mdata.add(int2);
+		histogramLine.setBackgroundColor(getResources().getColor(R.color.bg_white));
+		histogramLine.setData(mdata);
+		return histogramLine;
 	}
 }

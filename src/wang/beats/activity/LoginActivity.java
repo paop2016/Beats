@@ -90,7 +90,7 @@ public class LoginActivity extends Activity{
 		arr.add(R.drawable.pic8);
 		arr.add(R.drawable.pic9);
 		arr.add(R.drawable.pic10);
-		for (int i = 6; i < 15; i++) {
+		for (int i = 5; i < 15; i++) {
 			Cursor cursor = db.query("PeopleData", null, "people=?", new String[] { i + "" }, null, null, null);
 			cursor.moveToFirst();
 			int userCount_1 = cursor.getInt(cursor.getColumnIndex("count"));
