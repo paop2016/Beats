@@ -33,6 +33,12 @@ public class ListAdapter extends CommenAdapter<Friend>{
 		notifyDataSetChanged();
 		return friend;
 	}
+	public int getSelectPosition() {
+		return selectPosition;
+	}
+	public void setSelectPosition(int position){
+		selectPosition=position;
+	}
 	@Override
 	protected void convert(CommenViewHolder holder, Friend t) {
 		// TODO Auto-generated method stub

@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,7 +23,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -180,10 +181,24 @@ public class RecActivity extends FragmentActivity {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent intent = new Intent();
-					intent.setClass(RecActivity.this, LoginActivity.class);
-					startActivity(intent);
-					finish();
+					new AlertDialog.Builder(RecActivity.this).setMessage("确定要切换账户吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							Intent intent = new Intent();
+							intent.setClass(RecActivity.this, LoginActivity.class);
+							startActivity(intent);
+							finish();
+						}
+					}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							dialog.dismiss();
+						}
+					}).setCancelable(true).create().show();
 				}
 			});
 		}
@@ -202,8 +217,8 @@ public class RecActivity extends FragmentActivity {
 	private void initData() {
 		fragments.add(new SortFragment());
 		fragments.add(new SortFragment1());
-		fragments.add(new ConsequenceFragment());
 		fragments.add(new ConsequenceFragment1());
+		fragments.add(new ConsequenceFragment());
 		adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
 
 			@Override

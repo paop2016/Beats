@@ -71,30 +71,21 @@ public class LoginActivity extends Activity{
 		db = MyDatabaseHelper.getDatabase(this);
 		mUsers = new ArrayList<User>();
 		ArrayList<Integer> arr = new ArrayList<Integer>();
+		arr.add(R.drawable.pic1);
+		arr.add(R.drawable.pic2);
+		arr.add(R.drawable.pic3);
+		arr.add(R.drawable.pic4);
 		arr.add(R.drawable.pic5);
-		arr.add(R.drawable.pic1);
-		arr.add(R.drawable.pic2);
-		arr.add(R.drawable.pic3);
-		arr.add(R.drawable.pic4);
 		arr.add(R.drawable.pic6);
 		arr.add(R.drawable.pic7);
 		arr.add(R.drawable.pic8);
 		arr.add(R.drawable.pic9);
 		arr.add(R.drawable.pic10);
-		arr.add(R.drawable.pic1);
-		arr.add(R.drawable.pic2);
-		arr.add(R.drawable.pic3);
-		arr.add(R.drawable.pic4);
-		arr.add(R.drawable.pic6);
-		arr.add(R.drawable.pic7);
-		arr.add(R.drawable.pic8);
-		arr.add(R.drawable.pic9);
-		arr.add(R.drawable.pic10);
-		for (int i = 5; i < 15; i++) {
-			Cursor cursor = db.query("PeopleData", null, "people=?", new String[] { i + "" }, null, null, null);
+		for (int i = 0; i < 10; i++) {
+			Cursor cursor = db.query("PeopleData", null, "people=?", new String[] { i+20 + "" }, null, null, null);
 			cursor.moveToFirst();
 			int userCount_1 = cursor.getInt(cursor.getColumnIndex("count"));
-			User user = new User(arr.get(i), i, userCount_1);
+			User user = new User(arr.get(i), i+20, userCount_1);
 			mUsers.add(user);
 		}
 		mSpinnerAdapter = new LoginAdapter(this, mUsers, R.layout.item_user_login);

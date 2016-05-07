@@ -18,7 +18,7 @@ import wang.beats.dao.Friend;
 public class SortFragment1 extends Fragment{
 	private ArrayList<Friend> mFriends;
 	private ListAdapter adapter;
-	
+	private int selectedItem=-1;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -28,6 +28,7 @@ public class SortFragment1 extends Fragment{
 		listView.setBackgroundColor(getResources().getColor(R.color.bg_white));
 		listView.setDividerHeight((int) (getResources().getDisplayMetrics().density*1+0.5f));
 		adapter=new ListAdapter(getContext(), mFriends, R.layout.item_user_login);
+		adapter.setSelectPosition(selectedItem);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -35,6 +36,7 @@ public class SortFragment1 extends Fragment{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
 				adapter.changeSelect(position);
+				selectedItem=adapter.getSelectPosition();
 			}
 			
 		});
