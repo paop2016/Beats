@@ -34,10 +34,10 @@ import wang.beats.R;
 import wang.beats.dao.Friend;
 import wang.beats.dao.User;
 import wang.beats.db.MyDatabaseHelper;
-import wang.beats.fragment.ConsequenceFragment;
-import wang.beats.fragment.ConsequenceFragment1;
-import wang.beats.fragment.SortFragment;
-import wang.beats.fragment.SortFragment1;
+import wang.beats.fragment.CountFragment;
+import wang.beats.fragment.LineFragment;
+import wang.beats.fragment.JaccardFragment;
+import wang.beats.fragment.CosineFragment;
 import wang.beats.views.TitleBuilder;
 
 public class RecActivity extends FragmentActivity {
@@ -50,6 +50,7 @@ public class RecActivity extends FragmentActivity {
 	private FragmentPagerAdapter adapter;
 	private ArrayList<Friend> mJaccardList;
 	private ArrayList<Friend> mCosineList;
+	private ArrayList<Friend> mMixList;
 	private SQLiteDatabase db;
 	private HashMap<Integer,Integer> mCountMap;
 	
@@ -68,6 +69,7 @@ public class RecActivity extends FragmentActivity {
 		db=MyDatabaseHelper.getDatabase(this);
 		mJaccardList=new ArrayList<Friend>();
 		mCosineList=new ArrayList<Friend>();
+		mMixList=new ArrayList<Friend>();
 		mCountMap=new HashMap<Integer, Integer>();
 		mUser = (User) getIntent().getSerializableExtra("user");
 		int peopleName=mUser.getName();
@@ -137,7 +139,6 @@ public class RecActivity extends FragmentActivity {
 			Iterator<Entry<Integer, int[]>> it1=positionMap.entrySet().iterator();
 			while(it1.hasNext()){
 				Entry<Integer, int[]> entry=it1.next();
-				int position=entry.getKey();
 				int count0=entry.getValue()[0];
 				int count1=entry.getValue()[1];
 				numerator+=count0*count1;
@@ -145,10 +146,15 @@ public class RecActivity extends FragmentActivity {
 			DecimalFormat df=new DecimalFormat("#0.0000000");
 			Float jaccard=((float)sameNum)/(sumNum-sameNum);
 			Float cosine=(float) ((numerator)/(Math.sqrt(userModulo)*Math.sqrt(friendModulo)));
+//			算法部分
+			Float mix =(float) (jaccard*sumInit*sumInit*sumInit*0.000001*0.0016283*3+cosine);
+//			Float mix=jaccard*8+cosine;
 			Friend friend=new Friend(R.drawable.j, i, df.format(jaccard));
 			mJaccardList.add(friend);
 			Friend friend1=new Friend(R.drawable.c, i, df.format(cosine));
 			mCosineList.add(friend1);
+			Friend friend3=new Friend(R.drawable.c, i, df.format(mix));
+			mMixList.add(friend3);
 		}
 		Collections.sort(mJaccardList,new Comparator<Friend>(){
 			
@@ -159,6 +165,14 @@ public class RecActivity extends FragmentActivity {
 			}
 		});
 		Collections.sort(mCosineList,new Comparator<Friend>(){
+			
+			@Override
+			public int compare(Friend lhs, Friend rhs) {
+				// TODO Auto-generated method stub
+				return rhs.getSimilar().compareTo(lhs.getSimilar());
+			}
+		});
+		Collections.sort(mMixList,new Comparator<Friend>(){
 			
 			@Override
 			public int compare(Friend lhs, Friend rhs) {
@@ -215,10 +229,10 @@ public class RecActivity extends FragmentActivity {
 	}
 
 	private void initData() {
-		fragments.add(new SortFragment());
-		fragments.add(new SortFragment1());
-		fragments.add(new ConsequenceFragment1());
-		fragments.add(new ConsequenceFragment());
+		fragments.add(new JaccardFragment());
+		fragments.add(new CosineFragment());
+		fragments.add(new LineFragment());
+//		fragments.add(new CountFragment());
 		adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
 
 			@Override
@@ -234,7 +248,7 @@ public class RecActivity extends FragmentActivity {
 			}
 		};
 		vp.setAdapter(adapter);
-		vi.setText(titles).setVisible_item(4).setViewPager(vp, 0).setTextSize(16).setTextLightColor(0xffD64541)
+		vi.setText(titles).setVisible_item(3).setViewPager(vp, 0).setTextSize(16).setTextLightColor(0xffD64541)
 				.setIndicatorColor(0XFFE74C3C).setIndicatorHeight(2).setMovePattern(VPIndicator.MOVE_SMOOTH)
 				.setMoveDuration(300);
 	}
@@ -267,5 +281,8 @@ public class RecActivity extends FragmentActivity {
 	}
 	public ArrayList<Friend> getCosineList(){
 		return mCosineList;
+	}
+	public ArrayList<Friend> getMisList(){
+		return mMixList;
 	}
 }

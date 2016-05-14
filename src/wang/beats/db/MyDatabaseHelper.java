@@ -44,7 +44,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 			+ "id integer primary key autoincrement,"
 			+ "people varchar,"
 			+ "position varchar,"
-			+ "count int)";
+			+ "count Integer)";
 	private static String CREATE_PEOPLE_COUNT_OVER2_DATA="create table PeopleCountOver2Data("
 			+ "id integer primary key autoincrement,"
 			+ "people varchar,"
@@ -67,6 +67,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 			+ "id integer primary key autoincrement,"
 			+ "people varchar,"
 			+ "friend varchar)";
+	private static String CREATE_CONSEQUENCE_DATA="create table ConsequenceData("
+			+ "id integer primary key autoincrement,"
+			+ "people varchar,"
+			+ "count Integer,"
+			+ "j Integer,"
+			+ "c Integer,"
+			+ "m Integer,"
+			+ "jave Integer,"
+			+ "cave Integer,"
+			+ "mave Integer,"
+			+ "jcount Integer,"
+			+ "ccount Integer,"
+			+ "mcount Integer,"
+			+ "consequence varchar)";
 	private MyDatabaseHelper(Context context, String name, CursorFactory factory, int version) {
 		super(context, name, factory, version);
 		// TODO Auto-generated constructor stub
@@ -75,7 +89,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 		map = new HashMap<String, Integer>();
 	}
 	public static SQLiteDatabase getDatabase(Context context) {
-		dbHelper = new MyDatabaseHelper(context, "BeatsData", null, 98);
+		dbHelper = new MyDatabaseHelper(context, "BeatsData", null, 125);
 		return dbHelper.getWritableDatabase();
 	}
 
@@ -89,6 +103,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 		db.execSQL(CREATE_PEOPLE_Simple_DATA);
 		db.execSQL(CREATE_PEOPLE_COUNT_OVER2_DATA);
 		db.execSQL(CREATE_FRIEND_DATA);
+		db.execSQL(CREATE_CONSEQUENCE_DATA);
 		loadPeopleData(db);
 		loadPeopleData1(db);
 	}
@@ -250,6 +265,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 		db.execSQL("drop table if exists PeopleSimpleData");
 		db.execSQL("drop table if exists PeopleData");
 		db.execSQL("drop table if exists FriendData");
+		db.execSQL("drop table if exists ConsequenceData");
 		onCreate(db);
 		Toast.makeText(context, "version:" + newVersion, Toast.LENGTH_LONG).show();
 	}
