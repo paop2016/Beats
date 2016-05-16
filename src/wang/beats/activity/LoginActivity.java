@@ -69,14 +69,14 @@ public class LoginActivity extends Activity{
 		initView();
 		initData();
 		initFile2();
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				initDatabase(db);
-			}
-		}).start();
+//		new Thread(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				initDatabase(db);
+//			}
+//		}).start();
 	}
 
 
