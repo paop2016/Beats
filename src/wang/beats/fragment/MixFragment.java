@@ -1,47 +1,52 @@
 package wang.beats.fragment;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.View.OnGenericMotionListener;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 import wang.beats.R;
-import wang.beats.activity.LoginActivity;
 import wang.beats.activity.RecActivity;
 import wang.beats.adapter.ListAdapter;
 import wang.beats.dao.Friend;
 
-public class JaccardFragment extends Fragment{
+public class MixFragment extends Fragment{
 	private ArrayList<Friend> mFriends;
 	private ListAdapter adapter;
 	private int selectedItem=-1;
-	private ImageView iv;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stu
 		View view=inflater.inflate(R.layout.fragment_sort, container, false);
-		mFriends=((RecActivity)getActivity()).getJaccardList();
+		mFriends=((RecActivity)getActivity()).getMisList();
 		ListView listView=(ListView) view.findViewById(R.id.lv_jaccard);
-		iv=(ImageView) view.findViewById(R.id.iv_plus);
+		final ImageView iv=(ImageView) view.findViewById(R.id.iv_plus);
 		listView.setSelector(getResources().getDrawable(R.color.bg_transparent));
 		listView.setBackgroundColor(getResources().getColor(R.color.bg_white));
 		listView.setDividerHeight((int) (getResources().getDisplayMetrics().density*1+0.5f));
+		String mix0 = mFriends.get(0).getSimilar();
+		float value0=Float.valueOf(mix0);
+		float scale=1/value0;
+		DecimalFormat df=new DecimalFormat("#0.0000000");
+		Iterator<Friend> it=mFriends.iterator();
+		while(it.hasNext()){
+			Friend friend=it.next();
+			String mix=friend.getSimilar();
+			float value=Float.valueOf(mix);
+			friend.setSimilar(df.format(value*scale));
+		}
 		adapter=new ListAdapter(getContext(), mFriends, R.layout.item_user_login);
 		adapter.setSelectPosition(selectedItem);
 		if(selectedItem>=0){
@@ -73,7 +78,6 @@ public class JaccardFragment extends Fragment{
 							iv.getPaddingBottom() - 20);
 				}
 				return iv.onTouchEvent(event);
-//				return true;
 			}
 		});
 		iv.setOnClickListener(new OnClickListener() {
@@ -88,8 +92,5 @@ public class JaccardFragment extends Fragment{
 			}
 		});
 		return view;
-	}
-	public ImageView getIV(){
-		return iv;
 	}
 }

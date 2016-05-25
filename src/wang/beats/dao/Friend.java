@@ -32,7 +32,7 @@ public class Friend {
 	public String getSimilar() {
 		return similar;
 	}
-	public void setJaccard(String similar) {
+	public void setSimilar(String similar) {
 		this.similar = similar;
 	}
 }

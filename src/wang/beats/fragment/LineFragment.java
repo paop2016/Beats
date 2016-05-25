@@ -1,18 +1,9 @@
 package wang.beats.fragment;
 
-import java.net.IDN;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -32,6 +23,7 @@ public class LineFragment extends Fragment {
 	private ArrayList<Friend> mCosineList;
 	private ArrayList<Friend> mMixList;
 	ArrayList<List<Integer>> mdata;
+	private List<String> mTitles=Arrays.asList("Jaccard","Cosine","Mix");
 	private User mUser;
 
 	@Override
@@ -77,7 +69,7 @@ public class LineFragment extends Fragment {
 		mdata.add(int2);
 		mdata.add(int3);
 		histogramLine.setBackgroundColor(getResources().getColor(R.color.bg_white));
-		histogramLine.setData(mdata);
+		histogramLine.setDatas(mdata).setTitles(mTitles);
 		return histogramLine;
 	}
 

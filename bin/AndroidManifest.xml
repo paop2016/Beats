@@ -23,8 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity 
-            android:name="wang.beats.activity.RecActivity"></activity>
+        <activity android:name="wang.beats.activity.RecActivity"></activity>
+        <activity android:name="wang.beats.activity.EvaluationActivity"></activity>
     </application>
 
 </manifest>

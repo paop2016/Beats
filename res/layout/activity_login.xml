@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login"
-    tools:context=".activity.LoginActivity1" >
+    android:background="@drawable/bg_login">
 
     <ImageView
         android:layout_width="120dp"
@@ -31,4 +30,14 @@
 	    android:layout_alignTop="@id/spinnerId"
 	    android:layout_marginLeft="16dp"
 	    />
+	<ImageView
+	    android:background="@color/bg_tran_white"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:padding="8px"
+	    android:id="@+id/iv_line"
+	    android:src="@drawable/line"
+	    />
+	
 </RelativeLayout>

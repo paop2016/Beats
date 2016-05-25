@@ -1126,6 +1126,25 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int ratingBarStyleSmall=0x7f01006d;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int reach_color=0x7f0100d2;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int reach_height=0x7f0100d1;
         /**  Search icon displayed as a text field hint 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -1371,6 +1390,35 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
          */
         public static final int textColorSearchUrl=0x7f010044;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int text_color=0x7f0100d5;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int text_offset=0x7f0100d7;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int text_size=0x7f0100d6;
         /**  Deprecated. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -1490,6 +1538,25 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int track=0x7f0100c3;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int unreach_color=0x7f0100d4;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int unreach_height=0x7f0100d3;
         /**  Voice button icon 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -2043,30 +2110,33 @@ containing a value of this type.
         public static final int ic_launcher=0x7f02004f;
         public static final int icon=0x7f020050;
         public static final int j=0x7f020051;
-        public static final int logo=0x7f020052;
-        public static final int notification_template_icon_bg=0x7f020066;
-        public static final int pic1=0x7f020053;
-        public static final int pic10=0x7f020054;
-        public static final int pic11=0x7f020055;
-        public static final int pic12=0x7f020056;
-        public static final int pic13=0x7f020057;
-        public static final int pic14=0x7f020058;
-        public static final int pic15=0x7f020059;
-        public static final int pic16=0x7f02005a;
-        public static final int pic17=0x7f02005b;
-        public static final int pic2=0x7f02005c;
-        public static final int pic3=0x7f02005d;
-        public static final int pic4=0x7f02005e;
-        public static final int pic5=0x7f02005f;
-        public static final int pic6=0x7f020060;
-        public static final int pic7=0x7f020061;
-        public static final int pic8=0x7f020062;
-        public static final int pic9=0x7f020063;
-        public static final int sel_lv_login=0x7f020064;
-        public static final int sel_lv_recommend=0x7f020065;
+        public static final int line=0x7f020052;
+        public static final int logo=0x7f020053;
+        public static final int m=0x7f020054;
+        public static final int notification_template_icon_bg=0x7f020069;
+        public static final int pic1=0x7f020055;
+        public static final int pic10=0x7f020056;
+        public static final int pic11=0x7f020057;
+        public static final int pic12=0x7f020058;
+        public static final int pic13=0x7f020059;
+        public static final int pic14=0x7f02005a;
+        public static final int pic15=0x7f02005b;
+        public static final int pic16=0x7f02005c;
+        public static final int pic17=0x7f02005d;
+        public static final int pic2=0x7f02005e;
+        public static final int pic3=0x7f02005f;
+        public static final int pic4=0x7f020060;
+        public static final int pic5=0x7f020061;
+        public static final int pic6=0x7f020062;
+        public static final int pic7=0x7f020063;
+        public static final int pic8=0x7f020064;
+        public static final int pic9=0x7f020065;
+        public static final int plus=0x7f020066;
+        public static final int sel_lv_login=0x7f020067;
+        public static final int sel_lv_recommend=0x7f020068;
     }
     public static final class id {
-        public static final int action0=0x7f09005b;
+        public static final int action0=0x7f09005e;
         public static final int action_bar=0x7f090041;
         public static final int action_bar_activity_content=0x7f090003;
         public static final int action_bar_container=0x7f090040;
@@ -2075,21 +2145,21 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f090022;
         public static final int action_bar_title=0x7f090021;
         public static final int action_context_bar=0x7f090042;
-        public static final int action_divider=0x7f09005f;
+        public static final int action_divider=0x7f090062;
         public static final int action_menu_divider=0x7f090005;
         public static final int action_menu_presenter=0x7f090006;
         public static final int action_mode_bar=0x7f09003e;
         public static final int action_mode_bar_stub=0x7f09003d;
         public static final int action_mode_close_button=0x7f090023;
-        public static final int action_settings=0x7f09006c;
+        public static final int action_settings=0x7f09006f;
         public static final int activity_chooser_view_content=0x7f090024;
         public static final int alertTitle=0x7f090030;
         public static final int always=0x7f090019;
         public static final int beginning=0x7f09001e;
         public static final int buttonPanel=0x7f09002b;
-        public static final int cancel_action=0x7f09005c;
+        public static final int cancel_action=0x7f09005f;
         public static final int checkbox=0x7f090039;
-        public static final int chronometer=0x7f090062;
+        public static final int chronometer=0x7f090065;
         public static final int collapseActionView=0x7f09001a;
         public static final int contentPanel=0x7f090031;
         public static final int custom=0x7f090037;
@@ -2099,25 +2169,27 @@ containing a value of this type.
         public static final int disableHome=0x7f09000d;
         public static final int edit_query=0x7f090043;
         public static final int end=0x7f09001f;
-        public static final int end_padder=0x7f090067;
+        public static final int end_padder=0x7f09006a;
         public static final int expand_activities_button=0x7f090025;
         public static final int expanded_menu=0x7f090038;
-        public static final int hisId=0x7f090055;
         public static final int home=0x7f090000;
         public static final int homeAsUp=0x7f09000e;
         public static final int icon=0x7f090029;
         public static final int ifRoom=0x7f09001b;
         public static final int image=0x7f090026;
-        public static final int info=0x7f090066;
-        public static final int iv_go=0x7f090051;
-        public static final int iv_img_left=0x7f090068;
-        public static final int iv_item_userimg_login=0x7f090058;
-        public static final int line1=0x7f090060;
-        public static final int line3=0x7f090064;
+        public static final int info=0x7f090069;
+        public static final int iv_go=0x7f090053;
+        public static final int iv_img_left=0x7f09006b;
+        public static final int iv_item_userimg_login=0x7f09005b;
+        public static final int iv_line=0x7f090054;
+        public static final int iv_plus=0x7f090059;
+        public static final int lc_id=0x7f090051;
+        public static final int line1=0x7f090063;
+        public static final int line3=0x7f090067;
         public static final int listMode=0x7f09000a;
         public static final int list_item=0x7f090028;
-        public static final int lv_sort=0x7f090056;
-        public static final int media_actions=0x7f09005e;
+        public static final int lv_jaccard=0x7f090058;
+        public static final int media_actions=0x7f090061;
         public static final int middle=0x7f090020;
         public static final int multiply=0x7f090014;
         public static final int never=0x7f09001c;
@@ -2127,7 +2199,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f090007;
         public static final int progress_horizontal=0x7f090008;
         public static final int radio=0x7f09003b;
-        public static final int rl_id=0x7f090057;
+        public static final int rl_id=0x7f09005a;
         public static final int screen=0x7f090015;
         public static final int scrollIndicatorDown=0x7f090035;
         public static final int scrollIndicatorUp=0x7f090032;
@@ -2148,31 +2220,32 @@ containing a value of this type.
         public static final int showHome=0x7f090011;
         public static final int showTitle=0x7f090012;
         public static final int spacer=0x7f09002c;
-        public static final int spinnerId=0x7f090050;
+        public static final int spinnerId=0x7f090052;
         public static final int split_action_bar=0x7f090004;
         public static final int src_atop=0x7f090016;
         public static final int src_in=0x7f090017;
         public static final int src_over=0x7f090018;
-        public static final int status_bar_latest_event_content=0x7f09005d;
+        public static final int status_bar_latest_event_content=0x7f090060;
+        public static final int status_view=0x7f090050;
         public static final int submit_area=0x7f09004c;
         public static final int tabMode=0x7f09000c;
-        public static final int text=0x7f090065;
-        public static final int text2=0x7f090063;
+        public static final int text=0x7f090068;
+        public static final int text2=0x7f090066;
         public static final int textSpacerNoButtons=0x7f090034;
-        public static final int time=0x7f090061;
+        public static final int time=0x7f090064;
         public static final int title=0x7f09002a;
         public static final int title_template=0x7f09002f;
         public static final int topPanel=0x7f09002e;
-        public static final int tv_item_usercount_login=0x7f09005a;
-        public static final int tv_item_username_login=0x7f090059;
-        public static final int tv_title_center=0x7f09006a;
-        public static final int tv_title_left=0x7f090069;
-        public static final int tv_title_right=0x7f09006b;
+        public static final int tv_item_usercount_login=0x7f09005d;
+        public static final int tv_item_username_login=0x7f09005c;
+        public static final int tv_title_center=0x7f09006d;
+        public static final int tv_title_left=0x7f09006c;
+        public static final int tv_title_right=0x7f09006e;
         public static final int up=0x7f090001;
         public static final int useLogo=0x7f090013;
-        public static final int viewId=0x7f090052;
-        public static final int vp_id=0x7f090054;
-        public static final int vp_indicator=0x7f090053;
+        public static final int viewId=0x7f090055;
+        public static final int vp_id=0x7f090057;
+        public static final int vp_indicator=0x7f090056;
         public static final int withText=0x7f09001d;
         public static final int wrap_content=0x7f090009;
     }
@@ -2238,9 +2311,9 @@ containing a value of this type.
         public static final int abc_search_dropdown_item_icons_2line=0x7f030016;
         public static final int abc_search_view=0x7f030017;
         public static final int abc_select_dialog_material=0x7f030018;
-        public static final int activity_login=0x7f030019;
-        public static final int activity_recactivity=0x7f03001a;
-        public static final int fragment_consequence=0x7f03001b;
+        public static final int activity_evaluation=0x7f030019;
+        public static final int activity_login=0x7f03001a;
+        public static final int activity_recactivity=0x7f03001b;
         public static final int fragment_sort=0x7f03001c;
         public static final int item_user_login=0x7f03001d;
         public static final int notification_media_action=0x7f03001e;
@@ -5526,6 +5599,141 @@ containing a value of this type.
           @attr name wang.beats:allowStacking
         */
         public static final int ButtonBarLayout_allowStacking = 0;
+        /** Attributes that can be used with a CharmingProgressBar.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #CharmingProgressBar_reach_color wang.beats:reach_color}</code></td><td></td></tr>
+           <tr><td><code>{@link #CharmingProgressBar_reach_height wang.beats:reach_height}</code></td><td></td></tr>
+           <tr><td><code>{@link #CharmingProgressBar_text_color wang.beats:text_color}</code></td><td></td></tr>
+           <tr><td><code>{@link #CharmingProgressBar_text_offset wang.beats:text_offset}</code></td><td></td></tr>
+           <tr><td><code>{@link #CharmingProgressBar_text_size wang.beats:text_size}</code></td><td></td></tr>
+           <tr><td><code>{@link #CharmingProgressBar_unreach_color wang.beats:unreach_color}</code></td><td></td></tr>
+           <tr><td><code>{@link #CharmingProgressBar_unreach_height wang.beats:unreach_height}</code></td><td></td></tr>
+           </table>
+           @see #CharmingProgressBar_reach_color
+           @see #CharmingProgressBar_reach_height
+           @see #CharmingProgressBar_text_color
+           @see #CharmingProgressBar_text_offset
+           @see #CharmingProgressBar_text_size
+           @see #CharmingProgressBar_unreach_color
+           @see #CharmingProgressBar_unreach_height
+         */
+        public static final int[] CharmingProgressBar = {
+            0x7f0100d1, 0x7f0100d2, 0x7f0100d3, 0x7f0100d4,
+            0x7f0100d5, 0x7f0100d6, 0x7f0100d7
+        };
+        /**
+          <p>This symbol is the offset where the {@link wang.beats.R.attr#reach_color}
+          attribute's value can be found in the {@link #CharmingProgressBar} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name wang.beats:reach_color
+        */
+        public static final int CharmingProgressBar_reach_color = 1;
+        /**
+          <p>This symbol is the offset where the {@link wang.beats.R.attr#reach_height}
+          attribute's value can be found in the {@link #CharmingProgressBar} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name wang.beats:reach_height
+        */
+        public static final int CharmingProgressBar_reach_height = 0;
+        /**
+          <p>This symbol is the offset where the {@link wang.beats.R.attr#text_color}
+          attribute's value can be found in the {@link #CharmingProgressBar} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name wang.beats:text_color
+        */
+        public static final int CharmingProgressBar_text_color = 4;
+        /**
+          <p>This symbol is the offset where the {@link wang.beats.R.attr#text_offset}
+          attribute's value can be found in the {@link #CharmingProgressBar} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name wang.beats:text_offset
+        */
+        public static final int CharmingProgressBar_text_offset = 6;
+        /**
+          <p>This symbol is the offset where the {@link wang.beats.R.attr#text_size}
+          attribute's value can be found in the {@link #CharmingProgressBar} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name wang.beats:text_size
+        */
+        public static final int CharmingProgressBar_text_size = 5;
+        /**
+          <p>This symbol is the offset where the {@link wang.beats.R.attr#unreach_color}
+          attribute's value can be found in the {@link #CharmingProgressBar} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name wang.beats:unreach_color
+        */
+        public static final int CharmingProgressBar_unreach_color = 3;
+        /**
+          <p>This symbol is the offset where the {@link wang.beats.R.attr#unreach_height}
+          attribute's value can be found in the {@link #CharmingProgressBar} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name wang.beats:unreach_height
+        */
+        public static final int CharmingProgressBar_unreach_height = 2;
         /** Attributes that can be used with a CompoundButton.
            <p>Includes the following attributes:</p>
            <table>

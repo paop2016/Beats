@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,19 +24,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
+import charming.utils.ScreenUtils;
 import charming.views.VPIndicator;
+import charming.views.VPIndicator.VPListener;
 import wang.beats.R;
 import wang.beats.dao.Friend;
 import wang.beats.dao.User;
 import wang.beats.db.MyDatabaseHelper;
-import wang.beats.fragment.CountFragment;
 import wang.beats.fragment.LineFragment;
+import wang.beats.fragment.MixFragment;
 import wang.beats.fragment.JaccardFragment;
 import wang.beats.fragment.CosineFragment;
 import wang.beats.views.TitleBuilder;
@@ -45,7 +49,7 @@ public class RecActivity extends FragmentActivity {
 	private ViewPager vp;
 	private User mUser;
 	private long oldTime;
-	private List<String> titles = Arrays.asList("Jaccard", "Cosine","评价","评价1");
+	private List<String> titles = Arrays.asList("Jaccard", "Cosine","Mix","评价");
 	private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 	private FragmentPagerAdapter adapter;
 	private ArrayList<Friend> mJaccardList;
@@ -147,13 +151,13 @@ public class RecActivity extends FragmentActivity {
 			Float jaccard=((float)sameNum)/(sumNum-sameNum);
 			Float cosine=(float) ((numerator)/(Math.sqrt(userModulo)*Math.sqrt(friendModulo)));
 //			算法部分
-			Float mix =(float) (jaccard*sumInit*sumInit*sumInit*0.000001*0.0016283*3+cosine);
-//			Float mix=jaccard*8+cosine;
+//			Mix相关系数计算
+			Float mix =(float) (jaccard*sumInit*sumInit*sumInit*0.000001*0.0015625*3+cosine);
 			Friend friend=new Friend(R.drawable.j, i, df.format(jaccard));
 			mJaccardList.add(friend);
 			Friend friend1=new Friend(R.drawable.c, i, df.format(cosine));
 			mCosineList.add(friend1);
-			Friend friend3=new Friend(R.drawable.c, i, df.format(mix));
+			Friend friend3=new Friend(R.drawable.m, i, df.format(mix));
 			mMixList.add(friend3);
 		}
 		Collections.sort(mJaccardList,new Comparator<Friend>(){
@@ -200,6 +204,7 @@ public class RecActivity extends FragmentActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
+							ProgressDialog pd=ProgressDialog.show(RecActivity.this, "", "正在切换", false, false);
 							Intent intent = new Intent();
 							intent.setClass(RecActivity.this, LoginActivity.class);
 							startActivity(intent);
@@ -216,21 +221,13 @@ public class RecActivity extends FragmentActivity {
 				}
 			});
 		}
-		if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
-			View mTopView = findViewById(R.id.viewId);
-			// 透明状态栏
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-			// 透明通知栏
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-			LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-			params.height = getStatusBarHeight();
-			mTopView.setLayoutParams(params);
-		}
+		ScreenUtils.tranStutasBar(this, R.id.viewId);
 	}
 
 	private void initData() {
 		fragments.add(new JaccardFragment());
 		fragments.add(new CosineFragment());
+		fragments.add(new MixFragment());
 		fragments.add(new LineFragment());
 //		fragments.add(new CountFragment());
 		adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -248,7 +245,7 @@ public class RecActivity extends FragmentActivity {
 			}
 		};
 		vp.setAdapter(adapter);
-		vi.setText(titles).setVisible_item(3).setViewPager(vp, 0).setTextSize(16).setTextLightColor(0xffD64541)
+		vi.setText(titles).setVisible_item(4).setViewPager(vp, 0).setTextSize(16).setTextLightColor(0xffD64541)
 				.setIndicatorColor(0XFFE74C3C).setIndicatorHeight(2).setMovePattern(VPIndicator.MOVE_SMOOTH)
 				.setMoveDuration(300);
 	}
@@ -265,14 +262,6 @@ public class RecActivity extends FragmentActivity {
 		super.onBackPressed();
 	}
 
-	public int getStatusBarHeight() {
-		int result = 0;
-		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-		if (resourceId > 0) {
-			result = getResources().getDimensionPixelSize(resourceId);
-		}
-		return result;
-	}
 	public User getUser(){
 		return mUser;
 	}

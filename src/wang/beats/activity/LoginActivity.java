@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -16,11 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.w3c.dom.Text;
-
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -34,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -41,10 +39,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import charming.adapter.CommenViewHolder;
+import charming.utils.DensityUtils;
+import charming.utils.ScreenUtils;
 import wang.beats.R;
 import wang.beats.adapter.ListAdapter;
 import wang.beats.adapter.LoginAdapter;
@@ -57,6 +59,7 @@ public class LoginActivity extends Activity{
 	private LoginAdapter mSpinnerAdapter;
 	private List<User> mUsers;
 	private ImageView mGo;
+	private ImageView mEvaluation;
 	private User mSelectUser;
 	SQLiteDatabase db;
 	
@@ -68,7 +71,7 @@ public class LoginActivity extends Activity{
 		setContentView(R.layout.activity_login);
 		initView();
 		initData();
-		initFile2();
+//		initFile2();
 //		new Thread(new Runnable() {
 //			
 //			@Override
@@ -124,14 +127,19 @@ public class LoginActivity extends Activity{
 	@TargetApi(Build.VERSION_CODES.KITKAT)
 	private void initView() {
 		// TODO Auto-generated method stub
-		if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
-			// 透明状态栏
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-			// 透明通知栏
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-		}
+		ScreenUtils.ignoreStutasBar(this);
 		mSpinner=(Spinner) findViewById(R.id.spinnerId);
 		mGo=(ImageView) findViewById(R.id.iv_go);
+		mEvaluation=(ImageView) findViewById(R.id.iv_line);
+		
+//		RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams((int)(36*scale), (int)(36*scale));
+		RelativeLayout.LayoutParams params=(LayoutParams) mEvaluation.getLayoutParams();
+		params.height=DensityUtils.dp2px(this, 36);
+		params.width=DensityUtils.dp2px(this, 36);
+		params.topMargin=ScreenUtils.getStatusBarHeight(this)+DensityUtils.dp2px(this, 16);;
+		params.rightMargin=DensityUtils.dp2px(this, 16);
+		mEvaluation.setLayoutParams(params);
+		
 		mGo.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -150,11 +158,35 @@ public class LoginActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				ProgressDialog pd=ProgressDialog.show(LoginActivity.this, "", "正在登陆中", false, false);
 				Intent intent = new Intent();
 				intent.putExtra("user", mSelectUser);
 				intent.setClass(LoginActivity.this, RecActivity.class);
 				startActivity(intent);
 				finish();
+			}
+		});
+		mEvaluation.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getAction()==MotionEvent.ACTION_DOWN){
+					mEvaluation.setPadding(mEvaluation.getPaddingLeft()+8, mEvaluation.getPaddingTop()+8, mEvaluation.getPaddingRight()+8, mEvaluation.getPaddingBottom()+8);
+				}else if(event.getAction()==MotionEvent.ACTION_UP){
+					mEvaluation.setPadding(mEvaluation.getPaddingLeft()-8, mEvaluation.getPaddingTop()-8, mEvaluation.getPaddingRight()-8, mEvaluation.getPaddingBottom()-8);
+				}
+				return mEvaluation.onTouchEvent(event);
+			}
+		});
+		mEvaluation.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(LoginActivity.this, EvaluationActivity.class);
+				startActivity(intent);
 			}
 		});
 	}
@@ -182,21 +214,21 @@ public class LoginActivity extends Activity{
 			BufferedReader br = new BufferedReader(fr);
 			String string;
 			while ((string = br.readLine()) != null) {
-				// 去0 去粘连
 				String[] arr = string.split("\\s+");
 				if (arr.length == 5) {
+					// 去除无效地点
 					if (!arr[2].matches("0.0") && !arr[4].matches("['0']+")) {
 
 						StringBuilder sb = new StringBuilder();
 						sb.append(arr[2]);
 						sb.append(arr[3]);
-						// 去除经纬度相同地点重复
+						// 将地点代码编号
 						if (map.containsKey(sb.toString())) {
 							string = string.replaceAll(arr[4], map.get(sb.toString()));
 						} else {
 							map.put(sb.toString(), arr[4]);
 						}
-						// 去除用户无签到地点
+						// 去除无数据用户
 						if ((Integer.valueOf(arr[0]) - Integer.valueOf(nowPeople)) == 1) {
 							nowPeople = arr[0];
 						} else if ((Integer.valueOf(arr[0]) - Integer.valueOf(nowPeople)) == 2) {

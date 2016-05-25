@@ -3,11 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <charming.views.Histogram
-        android:id="@+id/hisId"
+    
+    <View 
+        android:background="#ffD64541"
+        android:id="@+id/status_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        
         />
-
+	<include layout="@layout/titlebar_layout"
+	    />
+	<charming.views.LineChart
+	    android:id="@+id/lc_id"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    />
 </LinearLayout>

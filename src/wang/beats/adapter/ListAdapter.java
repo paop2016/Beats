@@ -3,6 +3,7 @@ package wang.beats.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.view.View;
 import charming.adapter.CommenAdapter;
 import charming.adapter.CommenViewHolder;
 import wang.beats.R;
@@ -16,7 +17,7 @@ public class ListAdapter extends CommenAdapter<Friend>{
 		super(context, datas, layoutId);
 		// TODO Auto-generated constructor stub
 	}
-	public Friend changeSelect(int position){
+	public Friend changeSelect(int position, View view){
 		Friend friend=null;
 		if(position!=selectPosition){
 			friend=getItem(position);
@@ -24,9 +25,11 @@ public class ListAdapter extends CommenAdapter<Friend>{
 			if(selectPosition>=0){
 				getItem(selectPosition).setChecked(false);
 			}
+			view.setVisibility(View.VISIBLE);
 			selectPosition=position;
 		}
 		else {
+			view.setVisibility(View.GONE);
 			getItem(position).setChecked(false);
 			selectPosition=-1;
 		}
