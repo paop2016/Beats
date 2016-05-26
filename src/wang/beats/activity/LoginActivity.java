@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,7 +36,10 @@ import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -53,6 +57,7 @@ import wang.beats.adapter.LoginAdapter;
 import wang.beats.dao.Friend;
 import wang.beats.dao.User;
 import wang.beats.db.MyDatabaseHelper;
+import wang.beats.utils.ImageUtils;
 
 public class LoginActivity extends Activity{
 	private Spinner mSpinner;
@@ -60,6 +65,7 @@ public class LoginActivity extends Activity{
 	private List<User> mUsers;
 	private ImageView mGo;
 	private ImageView mEvaluation;
+	private ImageView mLogoBody;
 	private User mSelectUser;
 	SQLiteDatabase db;
 	
@@ -88,22 +94,11 @@ public class LoginActivity extends Activity{
 		// TODO Auto-generated method stub
 		db = MyDatabaseHelper.getDatabase(this);
 		mUsers = new ArrayList<User>();
-		ArrayList<Integer> arr = new ArrayList<Integer>();
-		arr.add(R.drawable.pic1);
-		arr.add(R.drawable.pic2);
-		arr.add(R.drawable.pic3);
-		arr.add(R.drawable.pic4);
-		arr.add(R.drawable.pic5);
-		arr.add(R.drawable.pic6);
-		arr.add(R.drawable.pic7);
-		arr.add(R.drawable.pic8);
-		arr.add(R.drawable.pic9);
-		arr.add(R.drawable.pic10);
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 100; i++) {
 			Cursor cursor = db.query("PeopleData", null, "people=?", new String[] { i + "" }, null, null, null);
 			cursor.moveToFirst();
-			int userCount_1 = cursor.getInt(cursor.getColumnIndex("count"));
-			User user = new User(arr.get(i), i, userCount_1);
+			int userCount = cursor.getInt(cursor.getColumnIndex("count"));
+			User user = new User(ImageUtils.getImage(i), i, userCount);
 			mUsers.add(user);
 		}
 		mSpinnerAdapter = new LoginAdapter(this, mUsers, R.layout.item_user_login);
@@ -131,6 +126,7 @@ public class LoginActivity extends Activity{
 		mSpinner=(Spinner) findViewById(R.id.spinnerId);
 		mGo=(ImageView) findViewById(R.id.iv_go);
 		mEvaluation=(ImageView) findViewById(R.id.iv_line);
+		mLogoBody=(ImageView) findViewById(R.id.iv_logoBody);
 		
 //		RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams((int)(36*scale), (int)(36*scale));
 		RelativeLayout.LayoutParams params=(LayoutParams) mEvaluation.getLayoutParams();
@@ -140,6 +136,19 @@ public class LoginActivity extends Activity{
 		params.rightMargin=DensityUtils.dp2px(this, 16);
 		mEvaluation.setLayoutParams(params);
 		
+		final TranslateAnimation animation = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, -0.3f);
+		animation.setDuration(600);
+		animation.setRepeatMode(Animation.REVERSE);
+		animation.setRepeatCount(5);
+		mLogoBody.startAnimation(animation);
+		mLogoBody.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mLogoBody.startAnimation(animation);
+			}
+		});
 		mGo.setOnTouchListener(new OnTouchListener() {
 			
 			@Override

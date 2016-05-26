@@ -1,0 +1,120 @@
+package wang.beats.utils;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import android.util.Log;
+import wang.beats.R;
+
+public class ImageUtils {
+	private static Map<Integer, Integer> map;
+	static{
+		map=new HashMap<Integer, Integer>();
+		map.put(0, R.drawable.pic1);
+		map.put(1, R.drawable.pic2);
+		map.put(2, R.drawable.pic3);
+		map.put(3, R.drawable.pic4);
+		map.put(4, R.drawable.pic5);
+		map.put(5, R.drawable.pic6);
+		map.put(6, R.drawable.pic7);
+		map.put(7, R.drawable.pic8);
+		map.put(8, R.drawable.pic9);
+		map.put(9, R.drawable.pic10);
+		map.put(10, R.drawable.pic11);
+		map.put(11, R.drawable.pic12);
+		map.put(12, R.drawable.pic13);
+		map.put(13, R.drawable.pic14);
+		map.put(14, R.drawable.pic15);
+		map.put(15, R.drawable.pic16);
+		map.put(16, R.drawable.pic17);
+		map.put(17, R.drawable.pic18);
+		map.put(18, R.drawable.pic19);
+		map.put(19, R.drawable.pic20);
+		map.put(20, R.drawable.pic21);
+		map.put(21, R.drawable.pic22);
+		map.put(22, R.drawable.pic23);
+		map.put(23, R.drawable.pic24);
+		map.put(24, R.drawable.pic25);
+		map.put(25, R.drawable.pic26);
+		map.put(26, R.drawable.pic27);
+		map.put(27, R.drawable.pic28);
+		map.put(28, R.drawable.pic29);
+		map.put(29, R.drawable.pic30);
+		map.put(30, R.drawable.pic31);
+		map.put(31, R.drawable.pic32);
+		map.put(32, R.drawable.pic33);
+		map.put(33, R.drawable.pic34);
+		map.put(34, R.drawable.pic35);
+		map.put(35, R.drawable.pic36);
+		map.put(36, R.drawable.pic37);
+		map.put(37, R.drawable.pic38);
+		map.put(38, R.drawable.pic39);
+		map.put(39, R.drawable.pic40);
+		map.put(40, R.drawable.pic41);
+		map.put(41, R.drawable.pic42);
+		map.put(42, R.drawable.pic43);
+		map.put(43, R.drawable.pic44);
+		map.put(44, R.drawable.pic45);
+		map.put(45, R.drawable.pic46);
+		map.put(46, R.drawable.pic47);
+		map.put(47, R.drawable.pic48);
+		map.put(48, R.drawable.pic49);
+		map.put(49, R.drawable.pic50);
+		map.put(50, R.drawable.pic51);
+		map.put(51, R.drawable.pic52);
+		map.put(52, R.drawable.pic53);
+		map.put(53, R.drawable.pic54);
+		map.put(54, R.drawable.pic55);
+		map.put(55, R.drawable.pic56);
+		map.put(56, R.drawable.pic57);
+		map.put(57, R.drawable.pic58);
+		map.put(58, R.drawable.pic59);
+		map.put(59, R.drawable.pic60);
+		map.put(60, R.drawable.pic61);
+		map.put(61, R.drawable.pic62);
+		map.put(62, R.drawable.pic63);
+		map.put(63, R.drawable.pic64);
+		map.put(64, R.drawable.pic65);
+		map.put(65, R.drawable.pic66);
+		map.put(66, R.drawable.pic67);
+		map.put(67, R.drawable.pic68);
+		map.put(68, R.drawable.pic69);
+		map.put(69, R.drawable.pic70);
+		map.put(70, R.drawable.pic71);
+		map.put(71, R.drawable.pic72);
+		map.put(72, R.drawable.pic73);
+		map.put(73, R.drawable.pic74);
+		map.put(74, R.drawable.pic75);
+		map.put(75, R.drawable.pic76);
+		map.put(76, R.drawable.pic77);
+		map.put(77, R.drawable.pic78);
+		map.put(78, R.drawable.pic79);
+		map.put(79, R.drawable.pic80);
+		map.put(80, R.drawable.pic81);
+		map.put(81, R.drawable.pic82);
+		map.put(82, R.drawable.pic83);
+		map.put(83, R.drawable.pic84);
+		map.put(84, R.drawable.pic85);
+		map.put(85, R.drawable.pic86);
+		map.put(86, R.drawable.pic87);
+		map.put(87, R.drawable.pic88);
+		map.put(88, R.drawable.pic89);
+		map.put(89, R.drawable.pic90);
+		map.put(90, R.drawable.pic91);
+		map.put(91, R.drawable.pic92);
+		map.put(92, R.drawable.pic93);
+		map.put(93, R.drawable.pic94);
+		map.put(94, R.drawable.pic95);
+		map.put(95, R.drawable.pic96);
+		map.put(96, R.drawable.pic97);
+		map.put(97, R.drawable.pic98);
+		map.put(98, R.drawable.pic99);
+		map.put(99, R.drawable.pic100);
+	}
+	public static int getImage(int index){
+		if(map.containsKey(index)){
+			return map.get(index);
+		}
+		return R.drawable.c;
+	}
+}

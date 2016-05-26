@@ -17,29 +17,32 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.os.Bundle;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
+import charming.utils.ConfigUtils;
+import charming.utils.DensityUtils;
 import charming.utils.ScreenUtils;
 import charming.views.VPIndicator;
-import charming.views.VPIndicator.VPListener;
 import wang.beats.R;
 import wang.beats.dao.Friend;
 import wang.beats.dao.User;
 import wang.beats.db.MyDatabaseHelper;
 import wang.beats.fragment.LineFragment;
 import wang.beats.fragment.MixFragment;
+import wang.beats.utils.ImageUtils;
 import wang.beats.fragment.JaccardFragment;
 import wang.beats.fragment.CosineFragment;
 import wang.beats.views.TitleBuilder;
@@ -49,6 +52,8 @@ public class RecActivity extends FragmentActivity {
 	private ViewPager vp;
 	private User mUser;
 	private long oldTime;
+	TextView tv_name;
+	TextView tv_count;
 	private List<String> titles = Arrays.asList("Jaccard", "Cosine","Mix","评价");
 	private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 	private FragmentPagerAdapter adapter;
@@ -57,6 +62,8 @@ public class RecActivity extends FragmentActivity {
 	private ArrayList<Friend> mMixList;
 	private SQLiteDatabase db;
 	private HashMap<Integer,Integer> mCountMap;
+	private DrawerLayout drawer;
+	private boolean flag=false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +82,7 @@ public class RecActivity extends FragmentActivity {
 		mCosineList=new ArrayList<Friend>();
 		mMixList=new ArrayList<Friend>();
 		mCountMap=new HashMap<Integer, Integer>();
-		mUser = (User) getIntent().getSerializableExtra("user");
+		
 		int peopleName=mUser.getName();
 //		地点集
 		Map<Integer, int[]> positionMap=new HashMap<Integer, int[]>();
@@ -153,12 +160,12 @@ public class RecActivity extends FragmentActivity {
 //			算法部分
 //			Mix相关系数计算
 			Float mix =(float) (jaccard*sumInit*sumInit*sumInit*0.000001*0.0015625*3+cosine);
-			Friend friend=new Friend(R.drawable.j, i, df.format(jaccard));
+			Friend friend=new Friend(ImageUtils.getImage(i), i, df.format(jaccard));
 			mJaccardList.add(friend);
-			Friend friend1=new Friend(R.drawable.c, i, df.format(cosine));
+			Friend friend1=new Friend(ImageUtils.getImage(i), i, df.format(cosine));
 			mCosineList.add(friend1);
-			Friend friend3=new Friend(R.drawable.m, i, df.format(mix));
-			mMixList.add(friend3);
+			Friend friend2=new Friend(ImageUtils.getImage(i), i, df.format(mix));
+			mMixList.add(friend2);
 		}
 		Collections.sort(mJaccardList,new Comparator<Friend>(){
 			
@@ -190,10 +197,31 @@ public class RecActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		vi = (VPIndicator) findViewById(R.id.vp_indicator);
 		vp = (ViewPager) findViewById(R.id.vp_id);
-
+		drawer=(DrawerLayout) findViewById(R.id.drawerId);
+		ImageView iv_icon = (ImageView) findViewById(R.id.iv_iconId);
+		tv_name=(TextView) findViewById(R.id.tv_iconId);
+		tv_count=(TextView) findViewById(R.id.tv_count);
+		
+		ConfigUtils.setDrawerLayoutSize(drawer, 100);
+		LayoutParams params=(LayoutParams) iv_icon.getLayoutParams();
+		params.topMargin=ScreenUtils.getStatusBarHeight(this)+DensityUtils.dp2px(this, 8);
+		iv_icon.setLayoutParams(params);
+		drawer.setScrimColor(0x33000000);
+		
 		mUser = (User) getIntent().getSerializableExtra("user");
+		tv_name.setText("用户"+mUser.getName());
+		tv_count.setText("签到数："+mUser.getCount());
+		iv_icon.setImageResource(ImageUtils.getImage(mUser.getName()));
+		
 		if (mUser != null) {
-			new TitleBuilder(this).setTextCenter("用户"+mUser.getName()).setTextRight("切换账号").setImgLeft(mUser.getImg())
+			new TitleBuilder(this).setTextCenter("好友推荐").setTextRight("切换账号").setImgLeft(R.drawable.menu).setLeftListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					drawer.openDrawer(Gravity.LEFT);
+				}
+			})
 			.setRightListener(new OnClickListener() {
 				
 				@Override
@@ -222,6 +250,32 @@ public class RecActivity extends FragmentActivity {
 			});
 		}
 		ScreenUtils.tranStutasBar(this, R.id.viewId);
+		drawer.setDrawerListener(new DrawerListener() {
+			
+			@Override
+			public void onDrawerStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onDrawerSlide(View arg0, float arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onDrawerOpened(View arg0) {
+				// TODO Auto-generated method stub
+				flag=true;
+			}
+			
+			@Override
+			public void onDrawerClosed(View arg0) {
+				// TODO Auto-generated method stub
+				flag=false;
+			}
+		});
 	}
 
 	private void initData() {
@@ -253,13 +307,17 @@ public class RecActivity extends FragmentActivity {
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		long currentTime = System.currentTimeMillis();
-		if (currentTime - oldTime > 2000) {
-			oldTime = System.currentTimeMillis();
-			Toast.makeText(this, "再按一次退出地理好友推荐系统", Toast.LENGTH_SHORT).show();
-			return;
+		if(flag){
+			drawer.closeDrawer(Gravity.LEFT);
+		}else {
+			long currentTime = System.currentTimeMillis();
+			if (currentTime - oldTime > 2000) {
+				oldTime = System.currentTimeMillis();
+				Toast.makeText(this, "再按一次退出地理好友推荐系统", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			super.onBackPressed();
 		}
-		super.onBackPressed();
 	}
 
 	public User getUser(){

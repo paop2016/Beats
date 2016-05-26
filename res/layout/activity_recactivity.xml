@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:id="@+id/drawerId"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical" >
 
     <View
         android:id="@+id/viewId"
@@ -23,5 +28,52 @@
         android:layout_height="0dp"
         android:layout_weight="1" >
     </android.support.v4.view.ViewPager>
-
-</LinearLayout>
+	</LinearLayout>
+	<RelativeLayout 
+	    android:clickable="true"
+	    android:background="@color/bg_white"
+	    android:layout_gravity="left"
+	    android:layout_width="240dp"
+	    android:layout_height="match_parent"
+	    >
+	    <RelativeLayout 
+	        android:id="@+id/rl_iconId"
+	        android:layout_width="match_parent"
+	        android:layout_height="160dp"
+	        android:background="@drawable/bg1"
+	   		>
+	        <ImageView 
+	            android:background="@drawable/pic4"
+	            android:id="@+id/iv_iconId"
+	            android:layout_width="56dp"
+	        	android:layout_height="56dp"
+	        	android:layout_marginLeft="16dp"
+	        />
+	        <TextView 
+	            android:id="@+id/tv_iconId"
+	        	android:layout_marginLeft="16dp"
+	        	android:layout_marginTop="20dp"
+	        	android:singleLine="true"
+	            android:layout_below="@id/iv_iconId"
+	            android:textColor="#ffffff"
+	            android:gravity="center"
+	            android:layout_width="56dp"
+	        	android:layout_height="wrap_content"
+				android:textSize="18sp"
+	            />
+	        <TextView 
+	            android:id="@+id/tv_count"
+	        	android:layout_marginTop="4dp"
+	        	android:singleLine="true"
+	        	android:layout_alignLeft="@id/tv_iconId"
+	            android:layout_below="@id/tv_iconId"
+	            android:textColor="#ffffff"
+	            android:gravity="center"
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+				android:textSize="14sp"
+	            />
+	    </RelativeLayout>
+	    
+	</RelativeLayout>
+</android.support.v4.widget.DrawerLayout>
