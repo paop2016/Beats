@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -19,16 +20,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
@@ -36,8 +44,11 @@ import charming.utils.ConfigUtils;
 import charming.utils.DensityUtils;
 import charming.utils.ScreenUtils;
 import charming.views.VPIndicator;
+import charming.views.VPIndicator.VPListener;
 import wang.beats.R;
+import wang.beats.adapter.ListDrawerAdapter;
 import wang.beats.dao.Friend;
+import wang.beats.dao.Position;
 import wang.beats.dao.User;
 import wang.beats.db.MyDatabaseHelper;
 import wang.beats.fragment.LineFragment;
@@ -52,8 +63,16 @@ public class RecActivity extends FragmentActivity {
 	private ViewPager vp;
 	private User mUser;
 	private long oldTime;
-	TextView tv_name;
-	TextView tv_count;
+	private TextView tv_name;
+	private TextView tv_count;
+	private ImageView iv_icon;
+	private ImageView iv_delate;
+	private ImageView iv_submit;
+	private TextView tv_item_position;
+	private TextView tv_item_conut;
+	private ListView lv_drawerlayout;
+	private RelativeLayout ll_container;
+	ProgressDialog progressDialog;
 	private List<String> titles = Arrays.asList("Jaccard", "Cosine","Mix","评价");
 	private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 	private FragmentPagerAdapter adapter;
@@ -64,15 +83,21 @@ public class RecActivity extends FragmentActivity {
 	private HashMap<Integer,Integer> mCountMap;
 	private DrawerLayout drawer;
 	private boolean flag=false;
-	
+	private HashMap<Integer,Integer> newCountMap;
+	private boolean needRefrash = false;
+	private List<Position> positions;
+	private ListDrawerAdapter drawerAdpter;
+	private int currentItem=0;
+	ProgressBar pg_drawerLayout;
+	private Handler handler = new Handler(Looper.getMainLooper());
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recactivity);
 		initView();
-		initData();
 		initList();
+		initData();
 	}
 
 	private void initList() {
@@ -81,8 +106,13 @@ public class RecActivity extends FragmentActivity {
 		mJaccardList=new ArrayList<Friend>();
 		mCosineList=new ArrayList<Friend>();
 		mMixList=new ArrayList<Friend>();
-		mCountMap=new HashMap<Integer, Integer>();
-		
+		if(needRefrash){
+			mCountMap=conbineMap(mCountMap, newCountMap);
+			newCountMap.clear();
+		}else{
+			mCountMap=new HashMap<Integer, Integer>();
+			newCountMap=new HashMap<Integer, Integer>();
+		}
 		int peopleName=mUser.getName();
 //		地点集
 		Map<Integer, int[]> positionMap=new HashMap<Integer, int[]>();
@@ -93,16 +123,20 @@ public class RecActivity extends FragmentActivity {
 		//适量乘积 分子
 		int numerator=0;
 //		获得当前用户地点、签到数Map
-		Cursor cursor=db.query("PeopleCountData", null, "people=?", new String[]{peopleName+""}, null, null, null);
-		if(cursor.moveToFirst()){
-			do{
-				int position=cursor.getInt(cursor.getColumnIndex("position"));
-				int count=cursor.getInt(cursor.getColumnIndex("count"));
-				mCountMap.put(position, count);
-				userModulo+=count*count;
-			}while(cursor.moveToNext());
+		if(!needRefrash){
+			Cursor cursor=db.query("PeopleCountData", null, "people=?", new String[]{peopleName+""}, null, null, null);
+			if(cursor.moveToFirst()){
+				do{
+					int position=cursor.getInt(cursor.getColumnIndex("position"));
+					int count=cursor.getInt(cursor.getColumnIndex("count"));
+					mCountMap.put(position, count);
+					userModulo+=count*count;
+				}while(cursor.moveToNext());
+			}
+			cursor.close();
+		}else{
+			userModulo=getModulo(mCountMap);
 		}
-		cursor.close();
 		int sameNum=0;
 		int sumNum=0;
 		int sumInit=0;
@@ -160,11 +194,11 @@ public class RecActivity extends FragmentActivity {
 //			算法部分
 //			Mix相关系数计算
 			Float mix =(float) (jaccard*sumInit*sumInit*sumInit*0.000001*0.0015625*3+cosine);
-			Friend friend=new Friend(ImageUtils.getImage(i), i, df.format(jaccard));
+			Friend friend=new Friend(ImageUtils.getScaledImage(i), i, df.format(jaccard));
 			mJaccardList.add(friend);
-			Friend friend1=new Friend(ImageUtils.getImage(i), i, df.format(cosine));
+			Friend friend1=new Friend(ImageUtils.getScaledImage(i), i, df.format(cosine));
 			mCosineList.add(friend1);
-			Friend friend2=new Friend(ImageUtils.getImage(i), i, df.format(mix));
+			Friend friend2=new Friend(ImageUtils.getScaledImage(i), i, df.format(mix));
 			mMixList.add(friend2);
 		}
 		Collections.sort(mJaccardList,new Comparator<Friend>(){
@@ -198,20 +232,45 @@ public class RecActivity extends FragmentActivity {
 		vi = (VPIndicator) findViewById(R.id.vp_indicator);
 		vp = (ViewPager) findViewById(R.id.vp_id);
 		drawer=(DrawerLayout) findViewById(R.id.drawerId);
-		ImageView iv_icon = (ImageView) findViewById(R.id.iv_iconId);
+		iv_icon = (ImageView) findViewById(R.id.iv_iconId);
+		iv_delate = (ImageView) findViewById(R.id.iv_delateId);
+		iv_submit = (ImageView) findViewById(R.id.iv_submitId);
 		tv_name=(TextView) findViewById(R.id.tv_iconId);
 		tv_count=(TextView) findViewById(R.id.tv_count);
+		tv_item_conut=(TextView) findViewById(R.id.tv_item_count_drawerLayout);
+		tv_item_position=(TextView) findViewById(R.id.tv_item_position_drawerLayout);
+		lv_drawerlayout=(ListView) findViewById(R.id.lv_drawerId);
+		ll_container=(RelativeLayout) findViewById(R.id.ll_containerId);
+		pg_drawerLayout=(ProgressBar) findViewById(R.id.pg_drawerlayout);
 		
 		ConfigUtils.setDrawerLayoutSize(drawer, 100);
 		LayoutParams params=(LayoutParams) iv_icon.getLayoutParams();
 		params.topMargin=ScreenUtils.getStatusBarHeight(this)+DensityUtils.dp2px(this, 8);
 		iv_icon.setLayoutParams(params);
-		drawer.setScrimColor(0x33000000);
+		drawer.setScrimColor(0x15000000);
 		
 		mUser = (User) getIntent().getSerializableExtra("user");
 		tv_name.setText("用户"+mUser.getName());
 		tv_count.setText("签到数："+mUser.getCount());
 		iv_icon.setImageResource(ImageUtils.getImage(mUser.getName()));
+		
+		iv_delate.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				emptyNewCount();
+
+			}
+		});
+		iv_submit.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				refresh();
+			}
+		});
 		
 		if (mUser != null) {
 			new TitleBuilder(this).setTextCenter("好友推荐").setTextRight("切换账号").setImgLeft(R.drawable.menu).setLeftListener(new OnClickListener() {
@@ -232,7 +291,7 @@ public class RecActivity extends FragmentActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
-							ProgressDialog pd=ProgressDialog.show(RecActivity.this, "", "正在切换", false, false);
+							ProgressDialog pd=ProgressDialog.show(RecActivity.this, "", "正在切换...", false, false);
 							Intent intent = new Intent();
 							intent.setClass(RecActivity.this, LoginActivity.class);
 							startActivity(intent);
@@ -283,7 +342,6 @@ public class RecActivity extends FragmentActivity {
 		fragments.add(new CosineFragment());
 		fragments.add(new MixFragment());
 		fragments.add(new LineFragment());
-//		fragments.add(new CountFragment());
 		adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
 
 			@Override
@@ -302,6 +360,30 @@ public class RecActivity extends FragmentActivity {
 		vi.setText(titles).setVisible_item(4).setViewPager(vp, 0).setTextSize(16).setTextLightColor(0xffD64541)
 				.setIndicatorColor(0XFFE74C3C).setIndicatorHeight(2).setMovePattern(VPIndicator.MOVE_SMOOTH)
 				.setMoveDuration(300);
+		vi.setVPListener(new VPListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+				// TODO Auto-generated method stub
+				currentItem=arg0;
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		positions = new ArrayList<Position>();
+		positions.addAll(getPositionList(mCountMap));
+		drawerAdpter = new ListDrawerAdapter(this, positions, R.layout.item_drawerlayout,ll_container);
+		lv_drawerlayout.setAdapter(drawerAdpter);
 	}
 
 	@Override
@@ -332,4 +414,93 @@ public class RecActivity extends FragmentActivity {
 	public ArrayList<Friend> getMisList(){
 		return mMixList;
 	}
+	public HashMap<Integer, Integer> conbineMap(HashMap<Integer, Integer> map1, HashMap<Integer, Integer> map2){
+		HashMap<Integer, Integer> map3= new HashMap<Integer, Integer>();
+		map3.putAll(map1);
+		Set<Entry<Integer, Integer>> entrySet = map2.entrySet();
+		Iterator<Entry<Integer, Integer>> it= entrySet.iterator();
+		while(it.hasNext()){
+			Entry<Integer, Integer> entry= it.next();
+			int key=entry.getKey();
+			int value = entry.getValue();
+			if(map3.containsKey(key)){
+				map3.put(key, value+map3.get(key));
+			}else{
+				map3.put(key, value);
+			}
+		}
+		return map3;
+	}
+	public List<Position> getPositionList(HashMap<Integer, Integer> map){
+		List<Position> list=new ArrayList<Position>();
+		Set<Entry<Integer, Integer>> entrySet = map.entrySet();
+		Iterator<Entry<Integer, Integer>> it= entrySet.iterator();
+		while(it.hasNext()){
+			Entry<Integer, Integer> entry= it.next();
+			int key=entry.getKey();
+			int value = entry.getValue();
+			Position position = new Position(key, value);
+			list.add(position);
+		}
+		Collections.sort(list,new Comparator<Position>(){
+			
+			@Override
+			public int compare(Position lhs, Position rhs) {
+				// TODO Auto-generated method stub
+				return rhs.getCount()-lhs.getCount();
+			}
+		});
+		return list;
+	}
+	public int  getModulo(HashMap<Integer, Integer> map){
+		int modulo=0;
+		List<Position> list=new ArrayList<Position>();
+		Set<Entry<Integer, Integer>> entrySet = map.entrySet();
+		Iterator<Entry<Integer, Integer>> it= entrySet.iterator();
+		while(it.hasNext()){
+			Entry<Integer, Integer> entry= it.next();
+			int key=entry.getKey();
+			int value = entry.getValue();
+			modulo+=value*value;
+		}
+		return modulo;
+	}
+	public void emptyNewCount(){
+		positions.clear();
+		positions.addAll(getPositionList(mCountMap));
+		drawerAdpter.notifyDataSetChanged();
+	}
+	public void refresh(){
+		
+		Iterator<Position> it = positions.iterator();
+		while(it.hasNext()){
+			Position position= it.next();
+			newCountMap.put(position.getName(), position.getNewCount());
+		}
+		needRefrash=true;
+		initList();
+		emptyNewCount();
+		fragments.clear();
+		fragments.add(new JaccardFragment());
+		fragments.add(new CosineFragment());
+		fragments.add(new MixFragment());
+		fragments.add(new LineFragment());
+		adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+
+			@Override
+			public int getCount() {
+				// TODO Auto-generated method stub
+				return fragments.size();
+			}
+
+			@Override
+			public Fragment getItem(int arg0) {
+				// TODO Auto-generated method stub
+				return fragments.get(arg0);
+			}
+		};
+		vp.setAdapter(adapter);
+		vp.setCurrentItem(currentItem);
+	} 
+
 }

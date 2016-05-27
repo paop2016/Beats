@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +28,7 @@ public class CosineFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		Log.v("jay", "CosineonCreateView");
 		View view=inflater.inflate(R.layout.fragment_sort, container, false);
 		mFriends=((RecActivity)getActivity()).getCosineList();
 		ListView listView=(ListView) view.findViewById(R.id.lv_jaccard);

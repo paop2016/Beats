@@ -6,7 +6,6 @@
         android:id="@+id/lv_jaccard"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-        
        ></ListView>
 	<wang.beats.views.ImageViewIntercept
 	    android:id="@+id/iv_plus"

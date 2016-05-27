@@ -1,79 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawerId"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <View
-        android:id="@+id/viewId"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#ffD64541" />
-
-    <include layout="@layout/titlebar_layout" />
-
-    <charming.views.VPIndicator
-        android:id="@+id/vp_indicator"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="39dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_id"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
-    </android.support.v4.view.ViewPager>
-	</LinearLayout>
-	<RelativeLayout 
-	    android:clickable="true"
-	    android:background="@color/bg_white"
-	    android:layout_gravity="left"
-	    android:layout_width="240dp"
-	    android:layout_height="match_parent"
-	    >
-	    <RelativeLayout 
-	        android:id="@+id/rl_iconId"
-	        android:layout_width="match_parent"
-	        android:layout_height="160dp"
-	        android:background="@drawable/bg1"
-	   		>
-	        <ImageView 
-	            android:background="@drawable/pic4"
-	            android:id="@+id/iv_iconId"
-	            android:layout_width="56dp"
-	        	android:layout_height="56dp"
-	        	android:layout_marginLeft="16dp"
-	        />
-	        <TextView 
-	            android:id="@+id/tv_iconId"
-	        	android:layout_marginLeft="16dp"
-	        	android:layout_marginTop="20dp"
-	        	android:singleLine="true"
-	            android:layout_below="@id/iv_iconId"
-	            android:textColor="#ffffff"
-	            android:gravity="center"
-	            android:layout_width="56dp"
-	        	android:layout_height="wrap_content"
-				android:textSize="18sp"
+        <View
+            android:id="@+id/viewId"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#ffD64541" />
+
+        <include layout="@layout/titlebar_layout" />
+
+        <charming.views.VPIndicator
+            android:id="@+id/vp_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="39dp" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_id"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_height="match_parent"
+		android:layout_width="wrap_content"
+        android:layout_gravity="left"
+        >
+        <LinearLayout
+            android:id="@+id/ll_drawerId"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:background="@color/bg_white"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/rl_iconId"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@drawable/bg1" >
+
+                <ImageView
+                    android:id="@+id/iv_iconId"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="@drawable/pic4"
+                     />
+
+                <TextView
+                    android:id="@+id/tv_iconId"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_iconId"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/tv_iconId"
+                    android:layout_below="@id/tv_iconId"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:background="#F1A9A0" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="地点"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/bg_gray" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="次数"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/bg_gray" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="修改签到"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lv_drawerId"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/bg_white"
+                android:dividerHeight="1dp"
+                android:listSelector="@color/bg_transparent" >
+            </ListView>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/ll_containerId"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/ll_drawerId"
+            android:background="#00ffffff"
+            android:clickable="true" >
+
+            <ProgressBar
+                android:id="@+id/pg_drawerlayout"
+	            android:visibility="gone"
+	            android:layout_marginTop="198dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp" 
+                android:indeterminateDrawable="@drawable/progressbar"  
+                />
+
+            <ImageView
+                android:id="@+id/iv_submitId"
+	            android:layout_marginTop="200dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginLeft="3dp"
+                android:background="@drawable/sign" />
+
+	        <ImageView
+	            android:layout_below="@id/iv_submitId"
+	            android:id="@+id/iv_delateId"
+	            android:layout_marginLeft="8dp"
+	            android:layout_marginTop="48dp"
+	            android:layout_width="36dp"
+	            android:layout_height="36dp"
+	            android:background="@drawable/delate2"
 	            />
-	        <TextView 
-	            android:id="@+id/tv_count"
-	        	android:layout_marginTop="4dp"
-	        	android:singleLine="true"
-	        	android:layout_alignLeft="@id/tv_iconId"
-	            android:layout_below="@id/tv_iconId"
-	            android:textColor="#ffffff"
-	            android:gravity="center"
-	            android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-				android:textSize="14sp"
-	            />
-	    </RelativeLayout>
-	    
-	</RelativeLayout>
+	        
+        </RelativeLayout>
+    </RelativeLayout>
 </android.support.v4.widget.DrawerLayout>

@@ -25,6 +25,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.Log;
@@ -36,7 +38,12 @@ import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -66,9 +73,20 @@ public class LoginActivity extends Activity{
 	private ImageView mGo;
 	private ImageView mEvaluation;
 	private ImageView mLogoBody;
+	private ImageView mLogoBase;
+	private ImageView mShake;
 	private User mSelectUser;
 	SQLiteDatabase db;
-	
+	AnimationSet bodyDisappearSet;
+	AnimationSet baseDisappearSet;
+	Handler handler = new Handler(){
+		public void handleMessage(Message msg) {
+			if(msg.what==1){
+				mLogoBody.startAnimation(bodyDisappearSet);
+				mLogoBase.startAnimation(baseDisappearSet);
+			}
+		}
+	};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -98,7 +116,7 @@ public class LoginActivity extends Activity{
 			Cursor cursor = db.query("PeopleData", null, "people=?", new String[] { i + "" }, null, null, null);
 			cursor.moveToFirst();
 			int userCount = cursor.getInt(cursor.getColumnIndex("count"));
-			User user = new User(ImageUtils.getImage(i), i, userCount);
+			User user = new User(ImageUtils.getScaledImage(i), i, userCount);
 			mUsers.add(user);
 		}
 		mSpinnerAdapter = new LoginAdapter(this, mUsers, R.layout.item_user_login);
@@ -127,6 +145,8 @@ public class LoginActivity extends Activity{
 		mGo=(ImageView) findViewById(R.id.iv_go);
 		mEvaluation=(ImageView) findViewById(R.id.iv_line);
 		mLogoBody=(ImageView) findViewById(R.id.iv_logoBody);
+		mLogoBase=(ImageView) findViewById(R.id.iv_logoBase);
+		mShake=(ImageView) findViewById(R.id.iv_shake);
 		
 //		RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams((int)(36*scale), (int)(36*scale));
 		RelativeLayout.LayoutParams params=(LayoutParams) mEvaluation.getLayoutParams();
@@ -136,17 +156,80 @@ public class LoginActivity extends Activity{
 		params.rightMargin=DensityUtils.dp2px(this, 16);
 		mEvaluation.setLayoutParams(params);
 		
-		final TranslateAnimation animation = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, -0.3f);
-		animation.setDuration(600);
-		animation.setRepeatMode(Animation.REVERSE);
-		animation.setRepeatCount(5);
-		mLogoBody.startAnimation(animation);
+		final TranslateAnimation jumpAnimation = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF, 0f,
+				TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, 0f,
+				TranslateAnimation.RELATIVE_TO_SELF, -0.3f);
+		jumpAnimation.setDuration(600);
+		jumpAnimation.setRepeatMode(Animation.REVERSE);
+		jumpAnimation.setRepeatCount(5);
+		jumpAnimation.setFillAfter(true);
+		//Logo本体
+		final TranslateAnimation bodyMoveOutAnimation = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF, 0f,
+				TranslateAnimation.RELATIVE_TO_SELF, -5f, TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, 2f);
+		final ScaleAnimation bodyScaleAnimation = new ScaleAnimation(1, 0.6f, 1, 0.6f);
+		//Logo底座
+		final TranslateAnimation baseMoveOutAnimation = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF, 0f,
+				TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, 5f);
+		AlphaAnimation alphaAnimation = new AlphaAnimation(1f, 0.5f);
+		//Logo手
+		final TranslateAnimation shakeMoveInAnimation = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF, 1.8f,
+				TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, -1.2f, TranslateAnimation.RELATIVE_TO_SELF, 0f);
+//		final TranslateAnimation shakeMoveInAnimation = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF, 2.4f,
+//				TranslateAnimation.RELATIVE_TO_SELF, 0f, TranslateAnimation.RELATIVE_TO_SELF, -1.6f, TranslateAnimation.RELATIVE_TO_SELF, 0f);
+		AlphaAnimation shakeAlphaAnimation = new AlphaAnimation(0.5f, 1f);
+		final AnimationSet shakeAppearSet = new AnimationSet(true);
+		shakeAppearSet.setFillAfter(true);
+		shakeAppearSet.addAnimation(shakeMoveInAnimation);
+		shakeAppearSet.addAnimation(shakeAlphaAnimation);
+		shakeAppearSet.setDuration(1200);
+		
+		
+		bodyDisappearSet = new AnimationSet(true);
+		bodyDisappearSet.setFillAfter(true);
+		bodyDisappearSet.addAnimation(bodyMoveOutAnimation);
+		bodyDisappearSet.addAnimation(alphaAnimation);
+		bodyDisappearSet.addAnimation(bodyScaleAnimation);
+		bodyDisappearSet.setDuration(1800);
+		
+		baseDisappearSet = new AnimationSet(true);
+		baseDisappearSet.setFillAfter(true);
+		baseDisappearSet.addAnimation(baseMoveOutAnimation);
+		baseDisappearSet.addAnimation(alphaAnimation);
+		baseDisappearSet.setDuration(1800);
+		
+		
+		mLogoBody.startAnimation(jumpAnimation);
+		jumpAnimation.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				// TODO Auto-generated method stub
+				mShake.setVisibility(View.VISIBLE);
+				mShake.startAnimation(shakeAppearSet);
+				handler.sendEmptyMessageDelayed(1, 600);
+			}
+		});
 		mLogoBody.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				mLogoBody.startAnimation(animation);
+				mLogoBody.startAnimation(jumpAnimation);
+				mLogoBase.clearAnimation();
+				mShake.clearAnimation();
+				mShake.setVisibility(View.GONE);
 			}
 		});
 		mGo.setOnTouchListener(new OnTouchListener() {

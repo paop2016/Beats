@@ -35,6 +35,7 @@ public class JaccardFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		Log.v("jay", "JaccardonCreateView");
 		View view=inflater.inflate(R.layout.fragment_sort, container, false);
 		mFriends=((RecActivity)getActivity()).getJaccardList();
 		ListView listView=(ListView) view.findViewById(R.id.lv_jaccard);
@@ -88,8 +89,5 @@ public class JaccardFragment extends Fragment{
 			}
 		});
 		return view;
-	}
-	public ImageView getIV(){
-		return iv;
 	}
 }
