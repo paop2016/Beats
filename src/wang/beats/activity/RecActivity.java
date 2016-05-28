@@ -245,7 +245,7 @@ public class RecActivity extends FragmentActivity {
 		ll_container=(RelativeLayout) findViewById(R.id.ll_containerId);
 		pg_drawerLayout=(ProgressBar) findViewById(R.id.pg_drawerlayout);
 		
-		ConfigUtils.setDrawerLayoutSize(drawer, 100);
+		ConfigUtils.setDrawerLayoutSize(drawer, 120);
 		LayoutParams params=(LayoutParams) iv_icon.getLayoutParams();
 		params.topMargin=ScreenUtils.getStatusBarHeight(this)+DensityUtils.dp2px(this, 8);
 		iv_icon.setLayoutParams(params);
