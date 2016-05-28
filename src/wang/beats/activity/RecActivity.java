@@ -141,11 +141,13 @@ public class RecActivity extends FragmentActivity {
 		int sumNum=0;
 		int sumInit=0;
 //		获得当前用户签到总次数
-		Cursor cursor2=db.query("PeopleData", null, "people=?", new String[]{peopleName+""}, null, null, null);
-		if(cursor2.moveToFirst()){
-			sumInit=cursor2.getInt(cursor2.getColumnIndex("count"));
-		}
-		cursor2.close();
+//		Cursor cursor2=db.query("PeopleData", null, "people=?", new String[]{peopleName+""}, null, null, null);
+//		if(cursor2.moveToFirst()){
+//			sumInit=cursor2.getInt(cursor2.getColumnIndex("count"));
+//		}
+//		cursor2.close();
+		sumInit=getSum(mCountMap);
+		
 		for (int i = 0; i < 100; i++) {
 			if(i==peopleName)
 				continue;
@@ -459,11 +461,21 @@ public class RecActivity extends FragmentActivity {
 		Iterator<Entry<Integer, Integer>> it= entrySet.iterator();
 		while(it.hasNext()){
 			Entry<Integer, Integer> entry= it.next();
-			int key=entry.getKey();
 			int value = entry.getValue();
 			modulo+=value*value;
 		}
 		return modulo;
+	}
+	public int getSum(HashMap<Integer, Integer> map){
+		int sum=0;
+		Set<Entry<Integer, Integer>> entrySet = map.entrySet();
+		Iterator<Entry<Integer, Integer>> it= entrySet.iterator();
+		while(it.hasNext()){
+			Entry<Integer, Integer> entry= it.next();
+			int value = entry.getValue();
+			sum+=value;
+		}
+		return sum;
 	}
 	public void emptyNewCount(){
 		positions.clear();
@@ -480,6 +492,7 @@ public class RecActivity extends FragmentActivity {
 		needRefrash=true;
 		initList();
 		emptyNewCount();
+		tv_count.setText("签到数："+getSum(mCountMap));
 		fragments.clear();
 		fragments.add(new JaccardFragment());
 		fragments.add(new CosineFragment());
