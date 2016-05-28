@@ -68,6 +68,7 @@ public class RecActivity extends FragmentActivity {
 	private ImageView iv_icon;
 	private ImageView iv_delate;
 	private ImageView iv_submit;
+	private ImageView iv_back;
 	private TextView tv_item_position;
 	private TextView tv_item_conut;
 	private ListView lv_drawerlayout;
@@ -141,11 +142,6 @@ public class RecActivity extends FragmentActivity {
 		int sumNum=0;
 		int sumInit=0;
 //		获得当前用户签到总次数
-//		Cursor cursor2=db.query("PeopleData", null, "people=?", new String[]{peopleName+""}, null, null, null);
-//		if(cursor2.moveToFirst()){
-//			sumInit=cursor2.getInt(cursor2.getColumnIndex("count"));
-//		}
-//		cursor2.close();
 		sumInit=getSum(mCountMap);
 		
 		for (int i = 0; i < 100; i++) {
@@ -237,6 +233,7 @@ public class RecActivity extends FragmentActivity {
 		iv_icon = (ImageView) findViewById(R.id.iv_iconId);
 		iv_delate = (ImageView) findViewById(R.id.iv_delateId);
 		iv_submit = (ImageView) findViewById(R.id.iv_submitId);
+		iv_back=(ImageView) findViewById(R.id.iv_back_drawer);
 		tv_name=(TextView) findViewById(R.id.tv_iconId);
 		tv_count=(TextView) findViewById(R.id.tv_count);
 		tv_item_conut=(TextView) findViewById(R.id.tv_item_count_drawerLayout);
@@ -262,7 +259,7 @@ public class RecActivity extends FragmentActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				emptyNewCount();
-
+//				reset();
 			}
 		});
 		iv_submit.setOnClickListener(new OnClickListener() {
@@ -273,7 +270,14 @@ public class RecActivity extends FragmentActivity {
 				refresh();
 			}
 		});
-		
+		iv_back.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				reset();
+			}
+		});
 		if (mUser != null) {
 			new TitleBuilder(this).setTextCenter("好友推荐").setTextRight("切换账号").setImgLeft(R.drawable.menu).setLeftListener(new OnClickListener() {
 				
@@ -483,7 +487,6 @@ public class RecActivity extends FragmentActivity {
 		drawerAdpter.notifyDataSetChanged();
 	}
 	public void refresh(){
-		
 		Iterator<Position> it = positions.iterator();
 		while(it.hasNext()){
 			Position position= it.next();
@@ -514,6 +517,37 @@ public class RecActivity extends FragmentActivity {
 		};
 		vp.setAdapter(adapter);
 		vp.setCurrentItem(currentItem);
-	} 
+		iv_back.setVisibility(View.VISIBLE);
+		Toast.makeText(this, "签到成功", Toast.LENGTH_SHORT).show();
+	}
 
+	public void reset() {
+		needRefrash = false;
+		initList();
+		emptyNewCount();
+		tv_count.setText("签到数：" + getSum(mCountMap));
+		fragments.clear();
+		fragments.add(new JaccardFragment());
+		fragments.add(new CosineFragment());
+		fragments.add(new MixFragment());
+		fragments.add(new LineFragment());
+		adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+
+			@Override
+			public int getCount() {
+				// TODO Auto-generated method stub
+				return fragments.size();
+			}
+
+			@Override
+			public Fragment getItem(int arg0) {
+				// TODO Auto-generated method stub
+				return fragments.get(arg0);
+			}
+		};
+		vp.setAdapter(adapter);
+		vp.setCurrentItem(currentItem);
+		iv_back.setVisibility(View.GONE);
+		Toast.makeText(this, "恢复成功", Toast.LENGTH_SHORT).show();
+	}
 }
